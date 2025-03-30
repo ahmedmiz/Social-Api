@@ -80,10 +80,9 @@ class UserService {
         try {
             if (!content || content.trim().length == 0) throw new ValidationError("Content text must provided!");
             await postDataLayer.getPostById(postId, ["author"]); 
-            const comment: IComment | null = await postDataLayer.createComment(content, userName, userId);
-            if (comment) 
-                await postDataLayer.addCommentToPost(postId, comment.id);
-            else  throw new ValidationError("Comment creation failed.");
+            const comment: IComment | null = await postDataLayer.createComment(content, userName, userId, postId);
+            if (!comment) 
+                throw new ValidationError("Comment creation failed or comment ID is invalid.");
             return comment; 
         } catch (error) { 
             throw error; 

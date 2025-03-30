@@ -5,7 +5,7 @@ import { ValidationError , NotFoundError } from '../util/errorHandling';
 class UserService {  
     async getUserFriendsById(userId: string): Promise<IUser | null>{
         try {
-        return await userDataLayer.getUserWithFriends(userId,["name"]);     
+        return await userDataLayer.getUserFriends(userId,["name"]);     
         } catch (error) { 
             throw error;
         }
