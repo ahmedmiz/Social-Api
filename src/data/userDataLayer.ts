@@ -1,8 +1,34 @@
 import { User } from "../model/models";
 import { IComment, IPost, IUser  } from "../dp/schemas";
-import { NotFoundError } from "../util/errorHandling";
+import { NotFoundError, ValidationError } from "../util/errorHandling";
 import IUserDataLayer from '../interfaces/data/IUserDataLayer';
- class UserDataLayer implements IUserDataLayer {
+import { isErrored } from "stream";
+class UserDataLayer implements IUserDataLayer {
+    async addUser(email: string, name: string, password: string): Promise<IUser | null> { 
+        try { 
+            const oldUser = await User.findOne({ email: email });
+            if (oldUser) throw new ValidationError("User already exist");
+        const user = new User({
+        name: name,
+        email: email,
+        password: password,
+        });
+            const savedUser = await user.save();
+            const newUser: IUser | null = savedUser.toObject() as IUser;
+            return newUser;
+        } catch (error) {
+            throw error;
+         }
+    }
+    async getUserByEmail(email: string, fields: string[]): Promise<IUser | null> { 
+        try {
+            const fieldSelector = fields.join(' ');
+            const user: IUser | null = await User.findOne({ email: email }).select(fieldSelector).lean().exec();
+            return user;
+        } catch (error) { 
+            throw error;
+        }
+    }
     async getUserByName(userName: string, fields: string[]): Promise<IUser[]> {
         try {
             const fieldSelector = fields.join(' ');

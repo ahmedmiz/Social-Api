@@ -1,5 +1,6 @@
 import { IComment, IPost, IUser } from "../../dp/schemas";
 interface IUserServices { 
+
     getUserByname(userName: string, fields: string[]): Promise<IUser[]>; 
     getUserById(userId: string, fields: string[]): Promise<IUser | null>; 
     getUserFriends(userId: string, fields: string[]): Promise<IUser[]>;

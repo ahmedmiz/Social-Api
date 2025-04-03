@@ -48,8 +48,6 @@ class UserService implements IUserServices{
     
     async updateUser(userId: string, userData: Partial<IUser>): Promise<IUser | null> {  
         try {  
-            if (!userData.email && !userData.password) 
-            throw new ValidationError("At least one field (email or password) must be provided for update.");  
             return await userDataLayer.updateUser(userId, userData);
         } catch (error) {  
             throw error;
