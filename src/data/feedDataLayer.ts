@@ -3,14 +3,15 @@ import { IComment, IPost } from "../dp/schemas";
 import { NotFoundError } from "../util/errorHandling";
 import userDataLayer from "./userDataLayer";
 import mongoose from "mongoose";
+import IFeedDataLayer from "../interfaces/data/IFeedDataLayer";
 
-class PostDataLayer {
-    async getAllPosts(page: number , fields: string[]):  Promise<any>{ 
+class FeedDataLayer implements IFeedDataLayer {
+    async getAllPosts(page: number , fields: string[]):  Promise<IPost[]>{ 
         try {
             const fieldSelector = fields.join(' ');
             const posts: IPost[] | null = await Post.find().sort({ createdAt: -1 }).skip((page - 1) * 10).limit(10).select(fieldSelector); 
             if (!posts) throw new NotFoundError("No posts to show!");
-            return posts;
+            return posts? posts : [];
         } catch (error) { 
             throw error;
         }
@@ -61,7 +62,7 @@ class PostDataLayer {
             throw error;
         } 
     }
-    async deletePost(postId: string) : Promise<boolean | null > {
+    async deletePost(postId: string) : Promise<boolean> {
         try { 
             const post: IPost | null = await Post.findOneAndDelete({ _id: postId });
             if (!post) throw new NotFoundError("Error on deleting a post!");
@@ -81,14 +82,16 @@ class PostDataLayer {
             throw error;
         }
     } 
-    async getCommentsByPostId(postId: string) : Promise<any | null > {
+    async getPostComments(postId: string , fields:string[]) : Promise<IComment[]> {
         try { 
-        if(mongoose.isValidObjectId(postId) === false) throw new NotFoundError("PostId is not valid!");
+        
+        if (mongoose.isValidObjectId(postId) === false) throw new NotFoundError("PostId is not valid!");
+        const fieldSelector = fields.join(' ');
         const post: IPost | null = await Post.findById(postId).populate({ path: 'comments' });
         if (!post) throw new NotFoundError("Post not found!");
         const comments: any | null = post ? post.comments : null;
             if (!comments) throw new NotFoundError("No Comments was found!");
-        return comments; 
+        return comments? comments : []; 
         } catch (error) {
             throw error;
         } 
@@ -133,7 +136,7 @@ class PostDataLayer {
     }
 }
 
-    async updateComment(content: string, commentId: string) : Promise<IComment | null > {
+    async updateCommentContent(content: string, commentId: string) : Promise<IComment | null > {
         try { 
             const comment: IComment | null = await Comment.findByIdAndUpdate(commentId, { content: content },{new : true}).exec();
             if (!comment) throw new NotFoundError("Error on updating a comment!");
@@ -142,10 +145,11 @@ class PostDataLayer {
             throw error;
         } 
     }
-    async deleteComment(commentId: string) : Promise<void | null > {
+    async deleteComment(commentId: string) : Promise<Boolean> {
         try { 
             const comment: IComment | null = await Comment.findOneAndDelete({ _id: commentId });
             if (!comment) throw new NotFoundError("Error on deleting a comment!");
+            return true; 
         } catch (error) {
             throw error;
         } 
@@ -153,4 +157,4 @@ class PostDataLayer {
 
 }
 
-export default new PostDataLayer(); 
+export default new FeedDataLayer(); 

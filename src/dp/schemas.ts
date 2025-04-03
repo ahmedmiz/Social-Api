@@ -3,8 +3,9 @@ interface IUser extends Document {
   email: string;
   name: string;
   password: string;
-  friends: mongoose.Types.ObjectId[];
-  posts: mongoose.Types.ObjectId[];
+  friends: IUser[];
+  posts: IPost[];
+  comments: IComment[];
   resetToken: string; 
   resetTokenExpiresAt: Date; 
 }
@@ -12,7 +13,7 @@ interface IPost extends Document {
   content: string;
   author: mongoose.Types.ObjectId;
   authorName: string; 
-  comments: mongoose.Types.ObjectId[];
+  comments: IComment;
   numberOfComments: number; 
 }
 interface IComment extends Document {

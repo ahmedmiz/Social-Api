@@ -1,12 +1,12 @@
 import { Router } from "express";
-import PostsController from "../controllers/postsController";
+import PostsController from "../controllers/feedController";
 import isAuth from '../middlewares/isAuth'; 
 import Authorization from "../middlewares/authorization";
 const router = Router();
 
 router.get("/:pageNumber", PostsController.getAllPosts);
 router.get("/:postId", PostsController.getPostById);
-router.get("/user/:userId", PostsController.getPostsByUserId);
+
 
 router.post("/create", isAuth, PostsController.createPost);
 

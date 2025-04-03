@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 dotenv.config();
 import { Post, User } from '../../src/model/models';
-import postDataLayer from '../../src/data/postDataLayer';
+import feedDataLayer from '../../src/data/feedDataLayer';
 import { NotFoundError } from '../../src/util/errorHandling';
 
 
@@ -17,7 +17,7 @@ describe('User Data Layer',  () => {
       email: 'test@example.com',
       password: 'password123'
       });
-      await  postDataLayer.createPost('Test post content', testUser._id, testUser.name);
+      await  feedDataLayer.createPost('Test post content', testUser._id, testUser.name);
     
   });
  after(async () => {
@@ -62,14 +62,14 @@ describe('User Data Layer',  () => {
   });
     describe("Update user by Id", () => {
         it("should update user name to nameUpdated by the user id", async () => {
-            const updatedUser = await userDataLayer.updateUserById(testUser.id, { name: "nameUpdated" });
+            const updatedUser = await userDataLayer.updateUser(testUser.id, { name: "nameUpdated" });
             expect(updatedUser).to.be.an('object');
             expect(updatedUser).to.have.property('name', 'nameUpdated');
         });
         it("should throw NotFoundError for non existent user", async () => {
             const nonExistentId = testUser._id.toString().replace(/./g, 'a');
             try {
-                await userDataLayer.updateUserById(nonExistentId, { name: "nameUpdated" });
+                await userDataLayer.updateUser(nonExistentId, { name: "nameUpdated" });
                 expect.fail('Should have thrown NotFoundError');
             } catch (error) {
                 expect(error).to.be.instanceOf(NotFoundError);
@@ -80,7 +80,7 @@ describe('User Data Layer',  () => {
     });
     describe("Get user Posts", () => { 
         it("user posts must be an array of posts with only requested fields", async () => {
-            const result = await userDataLayer.getUserPostsById(testUser._id, ['authorName', 'content']);
+            const result = await userDataLayer.getUserPosts(testUser._id, ['authorName', 'content']);
             expect(result).to.be.an('array');
             if (result.length > 0) {
                 expect(result[0]).to.have.all.keys(['_id', 'authorName', 'content']);
@@ -89,7 +89,7 @@ describe('User Data Layer',  () => {
         it("should throw NotFoundError for non-existent user", async () => {
             const nonExistentId = testUser._id.toString().replace(/./g, 'a');
             try {
-                await userDataLayer.getUserPostsById(nonExistentId, []);
+                await userDataLayer.getUserPosts(nonExistentId, []);
                 expect.fail('Should have thrown NotFoundError');
             } catch (error) {
                 expect(error).to.be.instanceOf(NotFoundError);

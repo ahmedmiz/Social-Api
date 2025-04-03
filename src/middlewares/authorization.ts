@@ -1,5 +1,5 @@
 import { NextFunction } from "express";
-import postServices from '../services/postServices';
+import postServices from '../services/feedService';
 import { ValidationError , apiErrorHandling} from "../util/errorHandling"; 
 import { IPost , IComment } from "../dp/schemas";
 export default class Authorization { 
