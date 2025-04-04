@@ -2,21 +2,33 @@ import { Router } from "express";
 import PostsController from "../controllers/feedController";
 import isAuth from '../middlewares/isAuth'; 
 import Authorization from "../middlewares/authorization";
+import { validate } from '../middlewares/validatior';
+import { createCommentSchema , createPostSchema ,updateCommentSchema , updatePostSchema} from "../validators/validationSchemas";
 const router = Router();
 
-router.get("/:pageNumber", PostsController.getAllPosts);
+
+// get list of posts 
+router.get("/", PostsController.getAllPosts);
+
+// get a post by it's id 
 router.get("/:postId", PostsController.getPostById);
 
+// creats a post 
+router.post("/", isAuth,validate(createPostSchema),PostsController.createPost);
 
-router.post("/create", isAuth, PostsController.createPost);
+//update a post content
+router.patch("/:postId", isAuth,Authorization.post ,validate(createPostSchema) , PostsController.updatePost);
 
-router.put("/update/:postId", isAuth,Authorization.post , PostsController.updatePost);
+//delete a post 
+router.delete("/:postId", isAuth , Authorization.post , PostsController.deletePost);
 
-router.delete("/delete/:postId", isAuth , Authorization.post , PostsController.deletePost);
-
+// get all comments on a post 
 router.get("/:postId/comments", PostsController.getCommentsByPostId);
-router.post("/:postId/comments/create", isAuth, PostsController.createComment);
-router.put("/:postId/comments/update/:commentId", isAuth , Authorization.comment , PostsController.updateComment);
-router.delete("/:postId/comments/delete/:commentId", isAuth, Authorization.comment , PostsController.deleteComment);
+// create a comment on post 
+router.post("/:postId/comments", isAuth,validate(createCommentSchema),  PostsController.createComment);
+//update comment content 
+router.patch("/comments/:commentId", isAuth, Authorization.comment,validate(updateCommentSchema) , PostsController.updateComment);
+// delete a comment 
+router.delete("/comments/:commentId", isAuth, Authorization.comment , PostsController.deleteComment);
 
 export default router;

@@ -29,10 +29,13 @@ const serverLogger = winston.createLogger({
 // Uncaught error handler
 export function unCaughtErrorHandler(
   err: any,
+  req: Request,
   res: Response,
+  next: NextFunction
 ) {
+
   serverLogger.error(`Uncaught Error in:`, err);
-  res.status(500).json({ error: 'Internal Server Error'});
+  res.status(500).json({ error: 'Internal Server Error', "success" : false });
 }
 
 
@@ -55,7 +58,7 @@ export function apiErrorHandling(
   };
 
   userLogger.error('API Error:', error);
-  res.status(status).json({ message });
+  res.status(status).json({ message , "succsess": false });
 }
 export class NotFoundError extends Error { 
   constructor(message: string) {  

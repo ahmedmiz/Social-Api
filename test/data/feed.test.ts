@@ -26,8 +26,8 @@ describe("Feed Data Layer", () => {
         
     });
     after(async () => {
-        User.deleteMany({ name: "Test User" });
-        Post.deleteMany({ authorName: "Test User" });
+        User.deleteMany({});
+        Post.deleteMany({});
         Comment.deleteMany({});
         await mongoose.disconnect();
     });

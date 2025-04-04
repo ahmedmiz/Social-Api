@@ -1,5 +1,7 @@
 import feedDataLayer from '../data/feedDataLayer';  
-import { IComment, IPost  } from '../dp/schemas'  
+
+import { IPost } from "../DB/postSchema";
+import { IComment } from '../DB/commentSchema';  
 import { ValidationError  } from '../util/errorHandling';
 import IFeedServices from '../interfaces/services/IFeedService';
 class FeedService implements IFeedServices {

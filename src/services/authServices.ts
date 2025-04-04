@@ -1,5 +1,5 @@
 import IAuthServices from '../interfaces/services/IAuthServices';
-import { IUser } from '../dp/schemas';
+import { IUser } from '../DB/userSchema';
 import Hashing from "../util/hashing";
 import { generateToken } from "../util/jwt";
 import { TokenBlackList } from "../model/models";

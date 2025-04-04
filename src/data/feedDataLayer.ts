@@ -1,9 +1,10 @@
 import { Post  , Comment, User} from "../model/models";
-import { IComment, IPost } from "../dp/schemas";
+import { IPost } from "../DB/postSchema";
+import { IComment } from '../DB/commentSchema';
 import { NotFoundError } from "../util/errorHandling";
 import userDataLayer from "./userDataLayer";
 import mongoose from "mongoose";
-import IFeedDataLayer from "../interfaces/data/IFeedDataLayer";
+import IFeedDataLayer from "../interfaces/dataLayer/IFeedDataLayer";
 
 class FeedDataLayer implements IFeedDataLayer {
     async getAllPosts(page: number , fields: string[]):  Promise<IPost[]>{ 

@@ -1,7 +1,10 @@
 import { User } from "../model/models";
-import { IComment, IPost, IUser  } from "../dp/schemas";
+import { IComment } from "../DB/commentSchema";
+import { IPost } from "../DB/postSchema";
+import { IUser } from "../DB/userSchema";
+
 import { NotFoundError, ValidationError } from "../util/errorHandling";
-import IUserDataLayer from '../interfaces/data/IUserDataLayer';
+import IUserDataLayer from '../interfaces/dataLayer/IUserDataLayer';
 import { isErrored } from "stream";
 class UserDataLayer implements IUserDataLayer {
     async addUser(email: string, name: string, password: string): Promise<IUser | null> { 

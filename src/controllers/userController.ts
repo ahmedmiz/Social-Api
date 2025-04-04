@@ -1,36 +1,41 @@
-import { IComment, IPost, IUser } from '../dp/schemas';
+import { IPost } from "../DB/postSchema";
+import { IComment } from '../DB/commentSchema';
+import { IUser } from "../DB/userSchema";
 import { apiErrorHandling, NotFoundError, ValidationError , unCaughtErrorHandler} from '../util/errorHandling';
 import  userService  from '../services/userServices';
 import Messages from '../util/message';
 import { sendResponse } from '../util/responsHandler';
+import { Request, Response, NextFunction } from 'express';
 
 export default class userController{
-    public static getUserByName = async (req: any, res: any) => { 
+    public static getUserByName = async (req: any, res: Response, next: NextFunction) => { 
         try {
-            const userName: string = req.userName; 
+            const userName: string = req.params.userName; 
             let fields: string[] = ["name"];
             const users: IUser[] = await userService.getUserByname(userName, fields);
             return sendResponse(res, 200, Messages.SUCCESS.FETCHED("users"), users);
         } catch (error) { 
              if (error instanceof NotFoundError || error instanceof ValidationError)
                 apiErrorHandling(error, req, res, error.message , 400 );
-             else unCaughtErrorHandler(error, res);
+                         else unCaughtErrorHandler(error, req ,res , next);
+
         }
     }
-        public static getUserById = async (req: any, res: any) => { 
+        public static getUserById = async (req: any, res: Response, next: NextFunction) => { 
         try {
-            const userId: string = req.userId; 
+            const userId: string = req.params.userId; 
             let fields: string[] = ["name"];
             const user: IUser | null = await userService.getUserById(userId, fields);
             return sendResponse(res, 200, Messages.SUCCESS.FETCHED("user"), user);
         } catch (error) { 
              if (error instanceof NotFoundError || error instanceof ValidationError)
                 apiErrorHandling(error, req, res, error.message , 400 );
-             else unCaughtErrorHandler(error, res);
+                                                   else unCaughtErrorHandler(error, req ,res , next);
+
         }
     }
     
-    public static getUserFiends = async (req: any, res: any) => { 
+    public static getUserFiends = async (req: any, res: Response, next: NextFunction) => { 
         try {
             const userId: string = req.user; 
             let fields : string[] = ["name"];
@@ -39,10 +44,11 @@ export default class userController{
         } catch (error) {
             if (error instanceof NotFoundError || error instanceof ValidationError)
                 apiErrorHandling(error, req, res, error.message , 400 );
-            else unCaughtErrorHandler(error, res);
+                                                  else unCaughtErrorHandler(error, req ,res , next);
+
         }
     }
-      public static getUserPosts = async (req: any, res: any) => { 
+      public static getUserPosts = async (req: any, res: Response, next: NextFunction) => { 
         try {
             const userId: string = req.user; 
             let fields : string[] = ["content" , "author" , "authorName" ,"numberOfComments"];
@@ -52,10 +58,11 @@ export default class userController{
         } catch (error) {
             if (error instanceof NotFoundError || error instanceof ValidationError)
                 apiErrorHandling(error, req, res, error.message , 400 );
-            else unCaughtErrorHandler(error, res);
+                                                  else unCaughtErrorHandler(error, req ,res , next);
+
         }
       }
-      public static getUserComments = async (req: any, res: any) => { 
+      public static getUserComments = async (req: any, res: Response, next: NextFunction) => { 
         try {
             const userId: string = req.user; 
             let fields : string[] = ["name"];
@@ -64,10 +71,11 @@ export default class userController{
          } catch (error) {
             if (error instanceof NotFoundError || error instanceof ValidationError)
                 apiErrorHandling(error, req, res, error.message , 400 );
-            else unCaughtErrorHandler(error, res);
+                                                  else unCaughtErrorHandler(error, req ,res , next);
+
         }
       }
-     public static updateUser = async (req: any, res: any) => { 
+     public static updateUser = async (req: any, res: Response, next: NextFunction) => { 
         try {
             const userId: string = req.user;
             const { name, password } = req.body;
@@ -78,10 +86,11 @@ export default class userController{
     } catch (error) {
             if (error instanceof NotFoundError || error instanceof ValidationError)
                 apiErrorHandling(error, req, res, error.message , 400 );
-            else unCaughtErrorHandler(error, res);
+                                                  else unCaughtErrorHandler(error, req ,res , next);
+
         }
       }
-        public static deleteUser = async (req: any, res: any) => { 
+        public static deleteUser = async (req: any, res: Response, next: NextFunction) => { 
         try {
             const userId: string = req.user; 
             await userService.deleteUser(userId);
@@ -89,7 +98,8 @@ export default class userController{
          } catch (error) {
             if (error instanceof NotFoundError || error instanceof ValidationError)
                 apiErrorHandling(error, req, res, error.message , 400 );
-            else unCaughtErrorHandler(error, res);
+                                                  else unCaughtErrorHandler(error, req ,res , next);
+
         }
         }
     

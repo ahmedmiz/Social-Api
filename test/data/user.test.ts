@@ -22,8 +22,8 @@ describe('User Data Layer',  () => {
   });
  after(async () => {
      // Cleanup and disconnect
-     await Post.deleteMany({ author: testUser._id });
-     await User.deleteMany({ email: 'test@example.com' });
+     await Post.deleteMany({});
+    await User.deleteMany({});
      await mongoose.disconnect();
   });
   describe("Get user by Id", () => {

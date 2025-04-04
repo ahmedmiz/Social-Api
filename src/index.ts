@@ -1,4 +1,4 @@
-import express, { Application} from "express";
+import express, { Application, NextFunction} from "express";
 import Routes from "./routes/index";
 import morgan from "morgan";
 import fs, { WriteStream } from "fs";
@@ -6,13 +6,13 @@ import path from "path";
 import cors from "cors";
 import helmet from "helmet";
 import { unCaughtErrorHandler } from "./util/errorHandling";
-import winston from "winston";
-export default class Server {
-  constructor(app: Application) {
-    this.config(app);
-    new Routes(app);
-  }
-  public config(app: Application): void {
+const app: Application = express();
+
+
+
+    
+
+
     const accessLogStream: WriteStream = fs.createWriteStream(
       path.join("./logs/access.log"),
       { flags: "a" }
@@ -27,10 +27,8 @@ export default class Server {
     app.use(cors());
     // middleware for security
     app.use(helmet());
+    new Routes(app);
     app.use(unCaughtErrorHandler);
-  }
-}
-process.on('beforeExit', function (err) {
-  winston.error(JSON.stringify(err));
-  console.error(err);
-});
+
+
+export { app };

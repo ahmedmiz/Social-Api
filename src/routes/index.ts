@@ -6,7 +6,7 @@ import { Application } from "express";
 export default class Routes {
   constructor(app: Application) {
     app.use("/auth", authRoute);
-    app.use("/posts", postsRoute);
+    app.use("/feed", postsRoute);
     app.use("/users", usersRoute);
   }
 }

@@ -1,5 +1,5 @@
 import { Request, NextFunction } from "express";
-import { IUser } from "../dp/schemas";
+import { IUser } from "../DB/userSchema";
 import { apiErrorHandling  , NotFoundError , ValidationError , unCaughtErrorHandler} from "../util/errorHandling";
 import authServices from "../services/authServices";
 import Messages from "../util/message";
@@ -14,7 +14,7 @@ const addUser = async (req: Request, res: any, next: NextFunction) => {
   catch (error) { 
                if (error instanceof NotFoundError || error instanceof ValidationError)
                   apiErrorHandling(error, req, res, error.message , 400 );
-               else unCaughtErrorHandler(error, res);
+               else unCaughtErrorHandler(error, req ,res , next);
           }
 };
 
@@ -28,7 +28,8 @@ const loginUser = async (req: Request, res: any, next: NextFunction) => {
   catch (error) { 
             if (error instanceof NotFoundError || error instanceof ValidationError)
                 apiErrorHandling(error, req, res, error.message , 400 );
-            else unCaughtErrorHandler(error, res);
+                else unCaughtErrorHandler(error, req ,res , next);
+
           }
   
 };
@@ -43,7 +44,7 @@ const logoutUser = async (req: Request, res: any, next: NextFunction) => {
  catch (error) { 
             if (error instanceof NotFoundError || error instanceof ValidationError)
                 apiErrorHandling(error, req, res, error.message , 400 );
-            else unCaughtErrorHandler(error, res);
+            else unCaughtErrorHandler(error, req ,res , next);
               }
 };
 
@@ -58,7 +59,7 @@ const forgotPassword = async (req: Request, res: any, next: NextFunction) => {
   } catch (error) { 
             if (error instanceof NotFoundError || error instanceof ValidationError)
                 apiErrorHandling(error, req, res, error.message , 400 );
-            else unCaughtErrorHandler(error, res);
+            else unCaughtErrorHandler(error, req ,res , next);
               }
 };
 
@@ -70,7 +71,7 @@ const resetPassword = async (req: Request, res: any, next: NextFunction) => {
   }  catch (error) { 
             if (error instanceof NotFoundError || error instanceof ValidationError)
                 apiErrorHandling(error, req, res, error.message , 400 );
-            else unCaughtErrorHandler(error, res);
+            else unCaughtErrorHandler(error, req ,res , next);
             }
 
 };

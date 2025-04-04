@@ -1,4 +1,6 @@
-import { IPost, IUser ,IComment} from "../../dp/schemas";
+import { IPost } from "../../DB/postSchema";
+import { IComment } from '../../DB/commentSchema';
+import { IUser } from "../../DB/userSchema";
 interface IUserDataLayer {
     addUser(name: string, email: string, password: string): Promise<IUser | null>;
     getUserByEmail(email: string,fields: string[] ): Promise<IUser | null>; 

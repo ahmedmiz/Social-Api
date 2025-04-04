@@ -1,4 +1,5 @@
-import { IComment , IPost } from "../../dp/schemas";
+import { IPost } from "../../DB/postSchema";
+import { IComment } from '../../DB/commentSchema';
 interface IFeedServices {
     getAllPosts(pageNumber: number, fields: string[]): Promise<IPost[]>;
     getPostById(PostId: string, fields: string[]): Promise<IPost | null>;

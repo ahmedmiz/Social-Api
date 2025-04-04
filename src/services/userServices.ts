@@ -1,6 +1,7 @@
 import userDataLayer from '../data/userDataLayer';  
-import { IComment, IPost, IUser } from '../dp/schemas'  
-import { ValidationError , NotFoundError } from '../util/errorHandling';
+import { IPost } from "../DB/postSchema";
+import { IComment } from '../DB/commentSchema';
+import { IUser } from '../DB/userSchema';
 import IUserServices from '../interfaces/services/IUserServices';
 class UserService implements IUserServices{  
     async getUserByname(userName: string, fields: string[]): Promise<IUser[]> {
