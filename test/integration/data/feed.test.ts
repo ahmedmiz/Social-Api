@@ -1,10 +1,10 @@
 import { expect } from "chai";
-import feedDataLayer from "../../src/data/feedDataLayer";
+import feedDataLayer from "../../../src/data/feedDataLayer";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 dotenv.config();
-import { Post, User } from "../../src/model/models";
-import { Comment } from "../../src/model/models";
+import { Post, User } from "../../../src/model/models";
+import { Comment } from "../../../src/model/models";
 
 
 describe("Feed Data Layer", () => {

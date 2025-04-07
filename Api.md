@@ -1,182 +1,396 @@
 # API Documentation  
-**Overview**: This API allows users to post , comment on post and add friends and much more.
+
+**Overview**: This API allows users to post, comment on posts, manage friends, and handle user authentication.  
 **Base URL**: `http://localhost:3000`  
 **Authentication**: Include an API key in the `Authorization` header: `Authorization: Bearer <your_api_key>`.  
 
-## Endpoints:  
-### Users  : `/users`
-1. **Get All friends**: `GET /friends` - Retrieve all friends. 
-Request body: `{}`
-Response status: `200 OK`
-Requires : `{Authentication}`
-Response body: 
+## Endpoints  
+
+### Users: `/users`
+
+1. **Get Users by Name Prefix**: `GET /:userName`  
+   - Retrieve all users with a name prefix.  
+   - Requires: `{}`  
+   - Response:  
+
+     ```json
+     {
+       "success": true,
+       "message": "users retrieved successfully.",
+       "data": [{ "users": [IUser] }]
+     }
+     ```
+
+2. **Get User by ID**: `GET /:userId`  
+   - Retrieve a user by their ID.  
+   - Requires: `{}`  
+   - Response:  
+
+     ```json
+     {
+       "success": true,
+       "message": "user retrieved successfully.",
+       "data": { "User": IUser }
+     }
+     ```
+
+3. **Get All Friends**: `GET /friends`  
+   - Retrieve all friends of the authenticated user.  
+   - Requires: `{Authentication}`  
+   - Response:  
+
+     ```json
+     {
+       "success": true,
+       "message": "friends retrieved successfully.",
+       "data": [{ "friends": [IUser] }]
+     }
+     ```
+
+4. **Get User's Posts**: `GET /posts`  
+   - Retrieve all posts of the authenticated user.  
+   - Requires: `{Authentication}`  
+   - Response:  
+
+     ```json
+     {
+       "success": true,
+       "message": "posts retrieved successfully.",
+       "data": [{ "posts": [IPost] }]
+     }
+     ```
+
+5. **Get User's Comments**: `GET /comments`  
+   - Retrieve all comments of the authenticated user.  
+   - Requires: `{Authentication}`  
+   - Response:  
+
+     ```json
+     {
+       "success": true,
+       "message": "comments retrieved successfully.",
+       "data": [{ "comments": [IComment] }]
+     }
+     ```
+
+6. **Update User Name**: `PATCH /userName`  
+   - Update the authenticated user's name.  
+   - Requires: `{Authentication}`  
+   - Request Body:  
+
+     ```json
+     { "userName": "new name" }
+     ```  
+
+   - Response:  
+
+     ```json
+     {
+       "success": true,
+       "message": "user updated successfully.",
+       "data": { "User": IUser }
+     }
+     ```
+
+7. **Delete User**: `DELETE /`  
+   - Delete the authenticated user.  
+   - Requires: `{Authentication}`  
+   - Response:  
+
+     ```json
+     {
+       "success": true,
+       "message": "user deleted successfully."
+     }
+     ```
+
+---
+
+### Feed: `/feed`
+
+1. **Get All Posts**: `GET /`  
+   - Retrieve all posts with pagination.  
+   - Requires: `{}`  
+   - Response:  
+
+     ```json
+     {
+       "success": true,
+       "message": "posts retrieved successfully.",
+       "data": [{ "posts": [IPost] }]
+     }
+     ```
+
+2. **Get Post by ID**: `GET /:postId`  
+   - Retrieve a post by its ID.  
+   - Requires: `{}`  
+   - Response:  
+
+     ```json
+     {
+       "success": true,
+       "message": "post retrieved successfully.",
+       "data": { "Post": IPost }
+     }
+     ```
+
+3. **Create a Post**: `POST /`  
+   - Create a new post.  
+   - Requires: `{Authentication}`  
+   - Request Body:  
+
+     ```json
+     { "content": "post content" }
+     ```  
+
+   - Response:  
+
+     ```json
+     {
+       "success": true,
+       "message": "post created successfully.",
+       "data": { "Post": IPost }
+     }
+     ```
+
+4. **Update a Post**: `PATCH /:postId`  
+   - Update a post's content by its ID.  
+   - Requires: `{Authentication}`  
+   - Request Body:  
+
+     ```json
+     { "content": "updated content" }
+     ```  
+
+   - Response:  
+
+     ```json
+     {
+       "success": true,
+       "message": "post updated successfully.",
+       "data": { "Post": IPost }
+     }
+     ```
+
+5. **Delete a Post**: `DELETE /:postId`  
+   - Delete a post by its ID.  
+   - Requires: `{Authentication}`  
+   - Response:  
+
+     ```json
+     {
+       "success": true,
+       "message": "post deleted successfully."
+     }
+     ```
+
+6. **Get Comments by Post ID**: `GET /:postId/comments`  
+   - Retrieve all comments on a post.  
+   - Requires: `{}`  
+   - Response:  
+
+     ```json
+     {
+       "success": true,
+       "message": "comments retrieved successfully.",
+       "data": [{ "comments": [IComment] }]
+     }
+     ```
+
+7. **Create a Comment**: `POST /:postId/comments`  
+   - Create a comment on a post.  
+   - Requires: `{Authentication}`  
+   - Request Body:  
+
+     ```json
+     { "content": "comment content" }
+     ```  
+
+   - Response:  
+
+     ```json
+     {
+       "success": true,
+       "message": "comment created successfully.",
+       "data": { "Comment": IComment }
+     }
+     ```
+
+8. **Update a Comment**: `PATCH /comments/:commentId`  
+   - Update a comment's content by its ID.  
+   - Requires: `{Authentication}`  
+   - Request Body:  
+
+     ```json
+     { "content": "updated comment content" }
+     ```  
+
+   - Response:  
+
+     ```json
+     {
+       "success": true,
+       "message": "comment updated successfully.",
+       "data": { "Comment": IComment }
+     }
+     ```
+
+9. **Delete a Comment**: `DELETE /comments/:commentId`  
+   - Delete a comment by its ID.  
+   - Requires: `{Authentication}`  
+   - Response:  
+
+     ```json
+     {
+       "success": true,
+       "message": "comment deleted successfully."
+     }
+     ```
+
+---
+
+### Auth: `/auth`
+
+1. **Register a User**: `POST /register`  
+   - Register a new user.  
+   - Requires: `{}`  
+   - Request Body:  
+
+     ```json
+     { "name": "user name", "email": "example@example.com", "password": "password" }
+     ```  
+
+   - Response:  
+
+     ```json
+     {
+       "success": true,
+       "message": "user registered successfully.",
+       "data": { "User": IUser }
+     }
+     ```
+
+2. **Login a User**: `POST /login`  
+   - Log in a user.  
+   - Requires: `{}`  
+   - Request Body:  
+
+     ```json
+     { "email": "example@example.com", "password": "password" }
+     ```  
+
+   - Response:  
+
+     ```json
+     {
+       "success": true,
+       "message": "login succeeded.",
+       "data": { "token": "jwt token" }
+     }
+     ```
+
+3. **Logout a User**: `POST /logout`  
+   - Log out the authenticated user.  
+   - Requires: `{Authentication}`  
+   - Response:  
+
+     ```json
+     {
+       "success": true,
+       "message": "logout succeeded."
+     }
+     ```
+
+4. **Forgot Password**: `POST /forgotPassword`  
+   - Send a forgot password email with an OTP.  
+   - Requires: `{}`  
+   - Request Body:  
+
+     ```json
+     { "email": "example@example.com" }
+     ```  
+
+   - Response:  
+
+     ```json
+     {
+       "success": true,
+       "message": "please check your email for OTP."
+     }
+     ```
+
+5. **Reset Password**: `POST /resetPassword`  
+   - Reset the user's password.  
+   - Requires: `{}`  
+   - Request Body:  
+
+     ```json
+     { "email": "example@example.com", "newPassword": "new password", "token": "otp token" }
+     ```  
+
+   - Response:  
+
+     ```json
+     {
+       "success": true,
+       "message": "password reset succeeded."
+     }
+     ```
+
+---
+
+### Data Models  
+
+#### IUser  
+
+Represents a user in the system.  
+
 ```json
-[{"name":"friend-name" , "id" : "friend-id"}]
-```
-2. **Add friend**: `POST /friends/addFriend/:friendId` - add a friend by id. 
-Request body: `{}`
-Response status: `200 OK`
-Requires : `{Authentication}`
-Response body: 
-```json
-{"message":"Friend added successfully!"}
-```
-3. **Remove friend**: `DELETE /friends/removeFriend/:friendId` - add a friend by id. 
-Request body: `{}`
-Response status: `200 OK`
-Requires : `{Authentication}`
-Response body:
-```json
-{"message":"Friend removed successfully!"}
+{
+  "id": "string",
+  "name": "string",
+  "email": "string",
+  "createdAt": "string (ISO 8601 date)",
+  "updatedAt": "string (ISO 8601 date)"
+}
 ```
 
-### Posts : `/posts`
-1. **Get All posts**: `GET /:pageNumber` - Get posts by page number , ten posts per page. 
-Request body: `{}`
-Response status: `200 OK`
-Requires : `{}`
-Response body: List of posts
+#### IPost  
+
+Represents a post in the system.  
+
 ```json
-[{"id":"post-id" , 
-"content":"content" ,
-"author":"author-id" , 
-"authorName":"author name" , 
-"numberOfComments" : "number of the comments on the post"}]
-```
-2. **Get Post by Id**: `GET /:postId` - Get a post by the Id. 
-Request body: `{}`
-Response status: `200 OK`
-Requires : `{}`
-Response body: Single post
-```json
-{"content":"content" ,
-"author":"author-id" , 
-"authorName":"author name" , 
-"numberOfComments" : "number of the comments on the post"}
-```
-3. **Get Post by a user**: `GET /user/:userId` - Get posts by a user by his id . 
-Request body: `{}`
-Response status: `201`
-Requires : `{}`
-Response body: List of posts
-```json
-[{"id":"post-id"
-"content":"content" ,
-"author":"author-id" , 
-"authorName":"author name" , 
-"numberOfComments" : "number of the comments on the post"}]
-```
-4. **Create a Post**: `POST /create` - Create a post. 
-Request body: `{"content" : "content text"}`
-Response status: `201`
-Requires : `{Authentication}`
-Response body: message
-```json
-{"message" : "created a post successfully!"}
-```
-5. **Update a Post**: `PUT /update/:postId` - Update a post content by it's id. 
-Request body: `{"content" : "new content text"}`
-Response status: `200`
-Requires : `{Authentication}`
-Response body: message
-```json
-{"message" : "updated a post successfully!"}
-```
-6. **Delete a Post**: `DELETE /delete/:postId` - Delete a post by it's id. 
-Request body: `{}`
-Response status: `204`
-Requires : `{Authentication}`
-Response body: message
-```json
-{"message" : "deleted a post successfully!"}
+{
+  "id": "string",
+  "content": "string",
+  "userId": "string",
+  "userName": "string",
+  "numberOfComments": "number",
+  "createdAt": "string (ISO 8601 date)",
+  "updatedAt": "string (ISO 8601 date)"
+}
 ```
 
-7. **Get a comments by a Post**: `GET /:postId/comments` - Getting all comments on a post. 
-Request body: `{}`
-Response status: `200`
-Requires : `{Authentication}`
-Response body: List of comments
+#### IComment  
+
+Represents a comment in the system.  
+
 ```json
-[{"content" : "comment text content" ,
-"authorId" : "comment author id" , 
-"authorName" : "comment author name"}]
-```
-8. **Create a comment to a Post**: `POST /:postId/comments/create` - Creating a comment
-Request body: `{
-    "content" : "comment text content"
-}`
-Response status: `201`
-Requires : `{Authentication}`
-Response body: message
-```json
-{"message" : "created a comment successfully! "}
-```
-9. **Updating a comment to a Post**: `PUT /:postId/comments/update/:commentId` - 
-Request body: `{
-    "content" : "new comment text content"
-}`
-Response status: `200`
-Requires : `{Authentication}`
-Response body: message
-```json
-{"message" : "updated a comment successfully! "}
-```
-10. **Deleting a comment to a Post**: `DELETE /:postId/comments/delete/:commentId` - 
-Request body: `{
-    "content" : "new comment text content"
-}`
-Response status: `204`
-Requires : `{Authentication}`
-Response body: message
-```json
-{"message" : "deleted a comment successfully! "}
-```
-### Auth : `/auth`
-1. **Register a user**: `POST /register` - Sign up new user .
-Request body: `{
-"name" : "user name" ,
-"email :"example@example.com" ,
-"password" : "password"}
-}`
-Response status: `201`
-Requires : `{}`
-Response body: message
-```json
-{"message" : "User added! " , "userId" : "user id" }
-```
-2. **Login a user**: `POST /login` - Sign in a user .
-Request body: `{
-"email :"example@example.com" ,
-"password" : "password"}
-}`
-Response status: `200`
-Requires : `{}`
-Response body: message
-```json
-{ "token": "api jwt token" }
-```
-3. **Logout a user**: `POST /logout` 
-Request body: `{}`
-Response status: `200`
-Requires : `{}`
-Response body: message
-```json
-{ "message": "Logged out!" }
+{
+  "id": "string",
+  "content": "string",
+  "userId": "string",
+  "userName": "string",
+  "postId": "string",
+  "createdAt": "string (ISO 8601 date)",
+  "updatedAt": "string (ISO 8601 date)"
+}
 ```
 
 **Error Responses**:  
+
 - `400 Bad Request`: Invalid input.  
 - `401 Unauthorized`: Missing or invalid API key.  
+- `403 Forbidden`: Access denied.  
 - `404 Not Found`: Resource not found.  
-- `500 Internal Server Error`: Server error.  
-
-**Example Request**: `Getting list of friends`  
-```js
-fetch(baseUrl/users/friends, {  
-  method: 'GET',  
-  headers: {  
-    'Authorization': `Bearer ${apiKey}`,
-    'Content-Type': 'application/json' 
-  }  
-})  
-  .then(response => ()) 
+- `500 Internal Server Error`: Server error.

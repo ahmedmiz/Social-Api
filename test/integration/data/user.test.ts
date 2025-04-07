@@ -1,11 +1,11 @@
 import { expect } from 'chai';
-import userDataLayer from '../../src/data/userDataLayer';
+import userDataLayer from '../../../src/data/userDataLayer';
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 dotenv.config();
-import { Post, User } from '../../src/model/models';
-import feedDataLayer from '../../src/data/feedDataLayer';
-import { NotFoundError } from '../../src/util/errorHandling';
+import { Post, User } from '../../../src/model/models';
+import feedDataLayer from '../../../src/data/feedDataLayer';
+import { NotFoundError } from '../../../src/util/errorHandling';
 
 
 describe('User Data Layer',  () => {

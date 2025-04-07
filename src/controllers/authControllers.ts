@@ -23,7 +23,7 @@ const loginUser = async (req: Request, res: any, next: NextFunction) => {
   try {
     const { email, password } = req.body;
     const token: string | null = await authServices.loginUser(email, password); 
-    return sendResponse(res, 200, Messages.SUCCESS.GENERAL("logging"),token);
+    return sendResponse(res, 200, Messages.SUCCESS.GENERAL("log in"),token);
   }
   catch (error) { 
             if (error instanceof NotFoundError || error instanceof ValidationError)
@@ -39,7 +39,7 @@ const logoutUser = async (req: Request, res: any, next: NextFunction) => {
     const authorization: string = req.headers['authorization']!;
     const token: string = authorization.split(' ')[1];
     await authServices.logoutUser(token);
-    return sendResponse(res, 200, Messages.SUCCESS.GENERAL("logging"),token);
+    return sendResponse(res, 200, Messages.SUCCESS.GENERAL("logout"),token);
   }
  catch (error) { 
             if (error instanceof NotFoundError || error instanceof ValidationError)

@@ -2,11 +2,11 @@ import { expect } from "chai";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import request from "supertest";
-import { app } from "../../src/index"; 
-import { Post, User } from "../../src/model/models";
-import { Comment } from "../../src/model/models";
-import { generateToken } from "../../src/util/jwt";
-import feedDataLayer from "../../src/data/feedDataLayer";
+import { app } from "../../../src/index"; 
+import { Post, User } from "../../../src/model/models";
+import { Comment } from "../../../src/model/models";
+import { generateToken } from "../../../src/util/jwt";
+import feedDataLayer from "../../../src/data/feedDataLayer";
 
 
 dotenv.config();
