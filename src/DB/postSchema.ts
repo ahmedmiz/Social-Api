@@ -3,8 +3,8 @@ import { IComment } from "./commentSchema";
 
 interface IPost extends Document {
   content: string;
-  author: mongoose.Types.ObjectId;
-  authorName: string; 
+  userId: mongoose.Types.ObjectId;
+  userName: string; 
   comments: IComment;
   numberOfComments: number; 
 }
@@ -13,12 +13,12 @@ const postSchema = new Schema<IPost>({
     type: String,
     required: true,
   },
-  author: {
+  userId: {
     type: Schema.Types.ObjectId,
     ref: 'User',
     required: true,
   },
-  authorName: {
+  userName: {
     type: String,
   },
   comments: [

@@ -30,8 +30,8 @@ describe("Feed Controller Integration Tests", () => {
 
         testPost = await Post.create({
             content: "Test controller post content",
-            author: testUser._id,
-            authorName: testUser.name,
+            userId: testUser._id,
+            userName: testUser.name,
             numberOfComments: 0
         });
         
@@ -42,7 +42,7 @@ describe("Feed Controller Integration Tests", () => {
     
     after(async () => {
         await User.deleteMany({ name: "Test Controller User" });
-        await Post.deleteMany({ authorName: "Test Controller User" });
+        await Post.deleteMany({ userName: "Test Controller User" });
         await Comment.deleteMany({ userName: "Test Controller User" });
         await mongoose.disconnect();
     });
@@ -67,7 +67,7 @@ describe("Feed Controller Integration Tests", () => {
             expect(response.body).to.have.property("success", true);
             expect(response.body).to.have.property("data");
             expect(response.body.data).to.have.property("content", "Test controller post content");
-            expect(response.body.data).to.have.property("authorName", testUser.name);
+            expect(response.body.data).to.have.property("userName", testUser.name);
         });
         
        
@@ -85,7 +85,7 @@ describe("Feed Controller Integration Tests", () => {
             expect(response.body).to.have.property("success", true);
             expect(response.body).to.have.property("data");
             expect(response.body.data).to.have.property("content", "New integration test post");
-            expect(response.body.data).to.have.property("authorName", testUser.name);
+            expect(response.body.data).to.have.property("userName", testUser.name);
         });
     });
         
@@ -116,8 +116,8 @@ describe("Feed Controller Integration Tests", () => {
 
             postToDelete = await Post.create({
                 content: "Post to be deleted",
-                author: testUser._id,
-                authorName: testUser.name,
+                userId: testUser._id,
+                userName: testUser.name,
                 numberOfComments: 0
             });
         });

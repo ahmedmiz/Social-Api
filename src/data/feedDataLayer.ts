@@ -34,7 +34,7 @@ class FeedDataLayer implements IFeedDataLayer {
             const user = await userDataLayer.getUserById(userId ,[]);
             if (!user) throw new NotFoundError("User not found!");
             const createdPosts = await Post.create(
-                [{ content, author: userId, authorName: userName }],
+                [{ content, userId: userId, userName: userName }],
                 { session }
             );
             const post: IPost | null = createdPosts[0];

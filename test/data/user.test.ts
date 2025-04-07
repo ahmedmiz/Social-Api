@@ -80,10 +80,10 @@ describe('User Data Layer',  () => {
     });
     describe("Get user Posts", () => { 
         it("user posts must be an array of posts with only requested fields", async () => {
-            const result = await userDataLayer.getUserPosts(testUser._id, ['authorName', 'content']);
+            const result = await userDataLayer.getUserPosts(testUser._id, ['userName', 'content']);
             expect(result).to.be.an('array');
             if (result.length > 0) {
-                expect(result[0]).to.have.all.keys(['_id', 'authorName', 'content']);
+                expect(result[0]).to.have.all.keys(['_id', 'userName', 'content']);
             }
         });
         it("should throw NotFoundError for non-existent user", async () => {

@@ -7,7 +7,7 @@ import IFeedServices from '../interfaces/services/IFeedService';
 class FeedService implements IFeedServices {
     async getAllPosts(pageNumber: number = 0, fields: string[]): Promise<IPost[]> {
         try {
-            fields = ["content", "author", "authorName"];
+            fields = ["content", "userId", "userName"];
             const posts: IPost[] | null = await feedDataLayer.getAllPosts(pageNumber, fields);
             return posts ? posts : [];
         } catch (error) {
@@ -23,10 +23,10 @@ class FeedService implements IFeedServices {
         }
     }
     
-    async createPost(content: string, userName: string, userId: string): Promise<IPost | null> {
+    async createPost(content: string, userId: string, userName: string): Promise<IPost | null> {
         try {
             if (!content || content.trim().length == 0) throw new ValidationError("Content text must be provided!");
-            const post: IPost | null = await feedDataLayer.createPost(content, userName, userId);
+            const post: IPost | null = await feedDataLayer.createPost(content, userId, userName);
             if (!post)
                 throw new ValidationError("Post creation failed or post ID is invalid.");
 
@@ -73,7 +73,7 @@ class FeedService implements IFeedServices {
     async createComment(content: string, postId: string, userName: string, userId: string): Promise<IComment | null> {
         try {
             if (!content || content.trim().length == 0) throw new ValidationError("Content text must provided!");
-            await feedDataLayer.getPostById(postId, ["author"]);
+            await feedDataLayer.getPostById(postId, ["userId"]);
             const comment: IComment | null = await feedDataLayer.createComment(content, userName, userId, postId);
             if (!comment)
                 throw new ValidationError("Comment creation failed or comment ID is invalid.");

@@ -11,8 +11,8 @@ export default class Authorization {
             apiErrorHandling(new ValidationError("post or user id "), req, res, "post and user id must be provided!" ,400);
             return;
         }
-        const post: IPost | null = await postServices.getPostById(postId, ["author"]);
-        if (post!.author?.toString() != userId) { apiErrorHandling(new ValidationError("Not authorized"), req, res, "Not authorized"); return;} 
+        const post: IPost | null = await postServices.getPostById(postId, ["userId"]);
+        if (post!.userId?.toString() != userId) { apiErrorHandling(new ValidationError("Not userized"), req, res, "Not userized"); return;} 
         next();
     }
     public static comment = async (req: any, res: any, next: NextFunction) => {
@@ -20,7 +20,7 @@ export default class Authorization {
         const userId: string = req.userId; 
         const comment: IComment | null = await postServices.getCommentById(commentId, ["userId"]);
         if (comment?.userId.toString() !== userId) {
-            apiErrorHandling(new ValidationError("Not authorized"), req, res, "Not authorized", 401);
+            apiErrorHandling(new ValidationError("Not userized"), req, res, "Not userized", 401);
             return;
         }
         next();

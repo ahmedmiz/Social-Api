@@ -13,7 +13,7 @@ public static getAllPosts = async (req: Request, res: Response, next: NextFuncti
         const page: number = Number(pageNumber);
         if (isNaN(page) || !Number.isFinite(page) || page < 1) {
             throw new ValidationError("Invalid page number");
-        }let postFileds : string[] = ["content", "author", "authorName", "numberOfComments"];
+        }let postFileds : string[] = ["content", "userId", "userName", "numberOfComments"];
         const posts = await feedServices.getAllPosts(page, postFileds); 
          return sendResponse(res, 200, Messages.SUCCESS.FETCHED("posts"),posts);
     } catch (error) {
@@ -27,7 +27,7 @@ public static getAllPosts = async (req: Request, res: Response, next: NextFuncti
     public static getPostById = async (req: Request, res: Response, next: NextFunction) => { 
     try {
         const postId: string = req.params.postId; 
-        const fields: string[] = ["content", "author", "authorName", "numberOfComments"];
+        const fields: string[] = ["content", "userId", "userName", "numberOfComments"];
         const post = await feedServices.getPostById(postId, fields); 
         return sendResponse(res, 200, Messages.SUCCESS.FETCHED("post"),post);
 

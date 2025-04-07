@@ -4,6 +4,7 @@ interface IComment extends Document {
   userId: mongoose.Types.ObjectId;
   userName: string; 
   postId: mongoose.Types.ObjectId;
+  parentId: mongoose.Types.ObjectId;
   
 }
 const commentSchema = new Schema<IComment>({
@@ -13,8 +14,13 @@ const commentSchema = new Schema<IComment>({
   },
   postId: {
     type: Schema.Types.ObjectId,
-    required: true,
+    default: null,
     ref: "Post",
+  },
+  parentId: {
+    type: Schema.Types.ObjectId,
+    default: null,
+    ref: "Comment",
   },
   userId: {
     type: Schema.Types.ObjectId,

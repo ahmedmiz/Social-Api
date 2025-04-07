@@ -12,7 +12,7 @@ describe("Feed Data Layer", () => {
     let testPost: any;
     let testComment: any; 
     let commentFields = ["content", "userId", "userName", "postId"];
-    let postFileds = ["content", "author", "authorName", "numberOfComments"];
+    let postFileds = ["content", "userId", "userName", "numberOfComments"];
     let userFileds = ["email", "name"];
     before(async () => {
         await mongoose.connect(process.env.DB_uri || "");
@@ -36,7 +36,7 @@ describe("Feed Data Layer", () => {
             const post = await feedDataLayer.createPost("New post content", testUser._id, testUser.name);
             expect(post).to.be.an("object");
             expect(post).to.have.property("content", "New post content");
-            expect(post).to.have.property("author", testUser._id);
+            expect(post).to.have.property("userId", testUser._id);
         });
     });
     describe("Update a Post", () => {
@@ -52,7 +52,7 @@ describe("Feed Data Layer", () => {
             const result = await feedDataLayer.getPostById(testPost._id,postFileds);
             expect(result).to.be.an("object");
             expect(result).to.have.property("content", "Updated post content");
-            expect(result).to.have.property("authorName", testUser.name);
+            expect(result).to.have.property("userName", testUser.name);
         });
         
     });
@@ -62,7 +62,7 @@ describe("Feed Data Layer", () => {
             expect(posts).to.be.an("array");
             expect(posts.length).to.be.greaterThan(0);
             expect(posts.length).to.be.lessThan(11);
-            expect(posts[0]).to.have.property("authorName", testUser.name);
+            expect(posts[0]).to.have.property("userName", testUser.name);
         });
     });
     describe("Creating a comment on a post", () => {
