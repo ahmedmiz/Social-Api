@@ -1,6 +1,7 @@
 import{ Schema, Document } from "mongoose";
 import { IPost } from "./postSchema";
 import { IComment } from "./commentSchema";
+import { INotification } from "./notification";
 interface IUser extends Document {
   email: string;
   name: string;
@@ -8,6 +9,7 @@ interface IUser extends Document {
   friends: IUser[];
   posts: IPost[];
   comments: IComment[];
+  notifications: INotification[];
   resetToken: string; 
   resetTokenExpiresAt: Date; 
 }
@@ -32,6 +34,12 @@ const userSchema = new Schema<IUser>({
   ],
   posts: [
     { type: Schema.Types.ObjectId, ref: "Post" }
+  ],
+  comments: [
+    { type: Schema.Types.ObjectId, ref: "Comment" }
+  ],
+  notifications: [
+    { type: Schema.Types.ObjectId, ref: "Notification" }  
   ],
   resetToken: {
     type: String,

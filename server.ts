@@ -16,17 +16,13 @@ const io = new SocketIOServer(server, {
 const connectedUsers = new Map<string, string>(); 
 
 io.on('connection', (socket) => {
-
   socket.on('resgister', (userId) => {
     connectedUsers.set(userId, socket.id);
-    console.log(`User ${userId} connected with socket ID: ${socket.id}`);
-    
   });
   socket.on('disconnect', () => {
     connectedUsers.forEach((value, key) => {
       if (value === socket.id) {
         connectedUsers.delete(key);
-        console.log(`User ${key} disconnected`);
       }
     });
   }
