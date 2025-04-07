@@ -24,6 +24,7 @@ This project is a RESTful API built with Node.js, Express, and MongoDB. It provi
 - **Mongoose**: ODM for MongoDB to manage schemas and queries.
 - **TypeScript**: Strongly typed JavaScript for better maintainability.
 - **Mocha & Chai**: Testing framework and assertion library for unit tests.
+- **Socket.io** :real-time, bidirectional communication between web clients and servers, for chat and live notifications.
 
 ---
 
@@ -45,8 +46,8 @@ This project is a RESTful API built with Node.js, Express, and MongoDB. It provi
 
 3. Create a `.env` file in the root directory and configure the following environment variables:
 
-   ```
-   
+   ```env
+
    PORT=3000
    MONGO_URI=mongodb://localhost:27017/api
    JWT_SECRET=your_jwt_secret
@@ -77,7 +78,7 @@ This project is a RESTful API built with Node.js, Express, and MongoDB. It provi
 - **GET** `/users/comments` - Retrieve all comments of the authenticated user.
 - **GET** `/users/notifications` - Retrieve all notifications of the authenticated user.
 - **PATCH** `/users/userName` - Update the authenticated user's name.
-- **DELETE** `/users/` - Delete the authenticated user.
+- **DELETE** `/users` - Delete the authenticated user.
 
 ### Feed Endpoints
 
