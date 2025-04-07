@@ -5,7 +5,9 @@ const port: number = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
 import { app } from './src/index';
 import http from 'http';
 import { Server as SocketIOServer } from 'socket.io';
-
+import { broadCastNotification} from './src/services/notification/broadcast';
+import { sendNotification } from "./src/services/notification/sendNotifiction";
+import { INotification, INotificationObject, NotificationType } from "./src/DB/notificationSchema";
 const server = http.createServer(app);
 const io = new SocketIOServer(server, {
   cors: {
@@ -18,6 +20,7 @@ const connectedUsers = new Map<string, string>();
 io.on('connection', (socket) => {
   socket.on('resgister', (userId) => {
     connectedUsers.set(userId, socket.id);
+    broadCastNotification(userId, socket.id);
   });
   socket.on('disconnect', () => {
     connectedUsers.forEach((value, key) => {

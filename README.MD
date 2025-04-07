@@ -75,6 +75,7 @@ This project is a RESTful API built with Node.js, Express, and MongoDB. It provi
 - **GET** `/users/friends` - Retrieve all friends of the authenticated user.
 - **GET** `/users/posts` - Retrieve all posts of the authenticated user.
 - **GET** `/users/comments` - Retrieve all comments of the authenticated user.
+- **GET** `/users/notifications` - Retrieve all notifications of the authenticated user.
 - **PATCH** `/users/userName` - Update the authenticated user's name.
 - **DELETE** `/users/` - Delete the authenticated user.
 

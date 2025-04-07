@@ -426,3 +426,12 @@
 [0mPOST /feed/67f42456f004d9b221ca1ec1/comments [32m201[0m 1045.130 ms - 349[0m
 [0mPATCH /feed/comments/67f42457f004d9b221ca1ec4 [32m200[0m 523.166 ms - 360[0m
 [0mDELETE /feed/comments/67f42457f004d9b221ca1ec4 [32m200[0m 457.403 ms - 70[0m
+[0mGET /feed?page=1 [32m200[0m 163.796 ms - 213[0m
+[0mGET /feed/67f45423a3cc16d6a7135991 [32m200[0m 159.508 ms - 231[0m
+[0mPOST /feed [32m201[0m 790.060 ms - 326[0m
+[0mPATCH /feed/67f45423a3cc16d6a7135991 [32m200[0m 467.988 ms - 363[0m
+[0mDELETE /feed/67f45426a3cc16d6a71359a1 [32m201[0m 476.378 ms - 67[0m
+[0mGET /feed/67f45423a3cc16d6a7135991/comments [32m200[0m 308.818 ms - 357[0m
+[0mPOST /feed/67f45423a3cc16d6a7135991/comments [32m201[0m 908.354 ms - 349[0m
+[0mPATCH /feed/comments/67f45424a3cc16d6a7135994 [32m200[0m 485.636 ms - 360[0m
+[0mDELETE /feed/comments/67f45424a3cc16d6a7135994 [32m200[0m 487.324 ms - 70[0m

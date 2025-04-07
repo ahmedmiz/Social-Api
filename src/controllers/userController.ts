@@ -102,6 +102,19 @@ export default class userController{
 
         }
         }
+    public static getUserNotifications = async (req: any, res: Response, next: NextFunction) => {
+        try {
+            const userId: string = req.user;
+            const notifications = await userService.getUserNotifiactions(userId);
+            return sendResponse(res, 200, Messages.SUCCESS.FETCHED("notifications"), notifications);
+        }
+        catch (error) {
+            if (error instanceof NotFoundError || error instanceof ValidationError)
+                apiErrorHandling(error, req, res, error.message, 400);
+            else unCaughtErrorHandler(error, req, res, next);
+
+        }
+    }
     
    
     

@@ -131,4 +131,22 @@ router.patch("/userName", isAuth, validate(updateUserSchema), userController.upd
 */
 router.delete("/", isAuth, userController.deleteUser);
 
+/*
+- retrive a list of notifications for the authenticated user
+- returns an array of notifications
+- Authentication: Yes
+- Authorization: No
+- Method: GET
+- URL: /users/notifications
+- Body: {}
+- parameters: {}
+- Response: {
+  "success": true,
+  "message": "notifications retrived successfully."
+  "data": {[ notifications : INotification ]}
+}
+- Error: 401 Unauthorized
+*/
+router.get("/notifications", isAuth, userController.getUserNotifications);
+
 export default router;

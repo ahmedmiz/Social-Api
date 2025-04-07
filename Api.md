@@ -104,6 +104,20 @@
      }
      ```
 
+8. **Get User's Comments**: `GET /notifications`  
+
+- Retrieve all notifications of the authenticated user.  
+- Requires: `{Authentication}`  
+- Response:  
+
+     ```json
+     {
+       "success": true,
+       "message": "notifications retrieved successfully.",
+       "data": [{ "notifications": [IComment] }]
+     }
+     ```
+
 ---
 
 ### Feed: `/feed`

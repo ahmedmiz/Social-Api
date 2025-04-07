@@ -1,7 +1,7 @@
 import{ Schema, Document } from "mongoose";
 import { IPost } from "./postSchema";
 import { IComment } from "./commentSchema";
-import { INotification } from "./notification";
+import { INotification } from "./notificationSchema";
 interface IUser extends Document {
   email: string;
   name: string;

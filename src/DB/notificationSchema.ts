@@ -11,19 +11,34 @@ enum NotificationType {
     FRIEND_REQUEST_ACCEPTED = "FRIEND_REQUEST_ACCEPTED",
     FRIEND_REQUEST_REJECTED = "FRIEND_REQUEST_REJECTED",
 }
+interface INotificationObject { 
+    senderId: string;
+    senderName?: string;
+    receiverId?: string;
+    type: NotificationType;
+    createdAt: Date;
+    updatedAt?: Date;
+    message: string;
+    IsDeleted?: boolean;
+    IsRead?: boolean;
+    userNotificationId?: string;
+    postId?: string;
+    commentId?: string;
+}
 
 interface INotification extends Document { 
     senderId: string;
+    senderName: string;
     receiverId: string;
     type: NotificationType;
     createdAt: Date;
-    updatedAt: Date;
+    updatedAt?: Date;
     message: string;
-    IsDeleted: boolean;
-    IsRead: boolean;
-    userNotificationId: string;
-    postId: string;
-    commentId: string;
+    IsDeleted?: boolean;
+    IsRead?: boolean;
+    userNotificationId?: string;
+    postId?: string;
+    commentId?: string;
     
 }
 
@@ -31,6 +46,9 @@ const notificationSchema = new Schema<INotification>({
     senderId: {
         type: String,
         required: true,
+    },
+    senderName: {
+        type: String
     },
     receiverId: {
         type: String,
@@ -72,4 +90,4 @@ const notificationSchema = new Schema<INotification>({
     
 
 });
-export { notificationSchema, INotification, NotificationType };   
+export { notificationSchema, INotification, NotificationType, INotificationObject };   

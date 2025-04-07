@@ -3,6 +3,7 @@ import { IPost } from "../DB/postSchema";
 import { IComment } from '../DB/commentSchema';
 import { IUser } from '../DB/userSchema';
 import IUserServices from '../interfaces/services/IUserServices';
+import { INotification } from '../DB/notificationSchema';
 class UserService implements IUserServices{  
     async getUserByname(userName: string, fields: string[]): Promise<IUser[]> {
         try { 
@@ -59,7 +60,16 @@ class UserService implements IUserServices{
             await userDataLayer.deleteUser(userId);
         } catch (error) { throw error; }
     }
+    async getUserNotifiactions(userId : string): Promise<INotification[]> {
+        try { 
+            const notifications: INotification[] = await userDataLayer.getUserNotifiactions(userId);
+            return notifications ? notifications : [];
+        }catch(error) { 
+            throw error;
+        }
     
+    }
+
    
 }  
 

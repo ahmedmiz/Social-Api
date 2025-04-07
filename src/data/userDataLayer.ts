@@ -6,6 +6,7 @@ import { IUser } from "../DB/userSchema";
 import { NotFoundError, ValidationError } from "../util/errorHandling";
 import IUserDataLayer from '../interfaces/dataLayer/IUserDataLayer';
 import { isErrored } from "stream";
+import { INotification } from "../DB/notificationSchema";
 class UserDataLayer implements IUserDataLayer {
     async addUser(email: string, name: string, password: string): Promise<IUser | null> { 
         try { 
@@ -102,6 +103,15 @@ class UserDataLayer implements IUserDataLayer {
          }
 
      }
+    async getUserNotifiactions(userId: string): Promise<INotification[]> { 
+        try { 
+            const user: IUser | null = await User.findById(userId, { notifications: 1 }).populate({ path: 'notifications', select: 'message createdAt' }).lean().exec();
+            if (!user) throw new NotFoundError("User not Found!");
+            return user.notifications ? user.notifications : [];
+        } catch (error) {
+            throw error;
+         }
+    }
 
     
 }

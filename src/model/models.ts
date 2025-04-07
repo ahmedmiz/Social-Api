@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import { userSchema , IUser} from "../DB/userSchema";
 import { postSchema , IPost} from '../DB/postSchema';
 import { commentSchema, IComment } from '../DB/commentSchema';
-import { notificationSchema, INotification } from '../DB/notification';
+import { notificationSchema, INotification } from '../DB/notificationSchema';
 import  tokenBlacklistSchema  from '../DB/tokenBlacklistSchema'
 
 
