@@ -1,6 +1,7 @@
 import * as winston from 'winston';
 import { Request, Response, NextFunction } from 'express';
 import { userErrorsLogPath , serverErrorsLogPath } from './path';
+import { error } from 'console';
 
 // Configure Winston logger
 const logFormat = winston.format.combine(
@@ -35,6 +36,7 @@ export function unCaughtErrorHandler(
 ) {
 
   serverLogger.error(`Uncaught Error in:`, err);
+  
   res.status(500).json({ error: 'Internal Server Error', "success" : false });
 }
 
@@ -58,6 +60,7 @@ export function apiErrorHandling(
   };
 
   userLogger.error('API Error:', error);
+  console.log(error);
   res.status(status).json({ message , "succsess": false });
 }
 export class NotFoundError extends Error { 

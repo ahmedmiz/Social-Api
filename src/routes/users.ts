@@ -22,25 +22,8 @@ import {updateUserSchema} from "../validators/validationSchemas";
 }
 - Error: 400 Bad Request 
 */
-router.get("/:userName", userController.getUserByName);
+router.get("/", userController.getUser);
 
-/*
-- retrieves a user by their ID
-- returns the user object
-- Authentication: No
-- Authorization: No
-- Method: GET
-- URL: /users/:userId
-- Body: {}
-- parameters: { userId: string }
-- Response: {
-  "success": true,
-  "message": "user retrieved successfully.",
-  "data": { User : IUser }
-}
-- Error: 404 Not Found
-*/
-router.get("/:userId", userController.getUserById);
 
 /*
 - retrieves all friends of the authenticated user
@@ -97,13 +80,13 @@ router.get("/posts", isAuth, userController.getUserPosts);
 router.get("/comments", isAuth, userController.getUserComments);
 
 /*
-- updates the authenticated user's name
+- updates the authenticated user's name or mail
 - returns the updated user object
 - Authentication: Yes
 - Authorization: No
 - Method: PATCH
 - URL: /users/userName
-- Body: { userName: string }
+- Body: { updateType: string =[name | email ] ,name: string }
 - parameters: {}
 - Response: {
   "success": true,
@@ -112,7 +95,7 @@ router.get("/comments", isAuth, userController.getUserComments);
 }
 - Error: 400 Bad Request, 401 Unauthorized
 */
-router.patch("/userName", isAuth, validate(updateUserSchema), userController.updateUser);
+router.put("/", isAuth,validate(updateUserSchema) ,userController.updateUser);
 
 /*
 - deletes the authenticated user
@@ -149,4 +132,6 @@ router.delete("/", isAuth, userController.deleteUser);
 */
 router.get("/notifications", isAuth, userController.getUserNotifications);
 
+
+router.post('/firends', isAuth, userController.addFriend);
 export default router;

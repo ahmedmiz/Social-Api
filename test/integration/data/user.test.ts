@@ -6,6 +6,7 @@ dotenv.config();
 import { Post, User } from '../../../src/model/models';
 import feedDataLayer from '../../../src/data/feedDataLayer';
 import { NotFoundError } from '../../../src/util/errorHandling';
+import { IUser } from '../../../src/DB/userSchema';
 
 
 describe('User Data Layer',  () => {
@@ -59,6 +60,14 @@ describe('User Data Layer',  () => {
       }
     });
 
+  });
+  describe("get users by name", () => {
+    it("should return list of users with prefix equel to userName", async () => { 
+      const users: IUser[] = await userDataLayer.getUserByName(testUser.name, ["name"]); 
+      expect(users).to.be.an("array");
+      expect(users).to.have.lengthOf.greaterThan(0);
+      
+    })
   });
     describe("Update user by Id", () => {
         it("should update user name to nameUpdated by the user id", async () => {

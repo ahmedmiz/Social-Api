@@ -124,7 +124,10 @@ class FeedDataLayer implements IFeedDataLayer {
         if (!updatedPost) {
             throw new Error("Failed to update the post with the new comment!");
         }
-
+        const updateUser = await User.findByIdAndUpdate(userId, { $push: { comments: comment._id } }, { new: true, session }).exec();
+        if (!updateUser) {
+            throw new Error("Failed to update the user with the new comment!");
+        }
         await session.commitTransaction();
         session.endSession();
 

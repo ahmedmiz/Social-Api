@@ -6,8 +6,6 @@ import { app } from './src/index';
 import http from 'http';
 import { Server as SocketIOServer } from 'socket.io';
 import { broadCastNotification} from './src/services/notification/broadcast';
-import { sendNotification } from "./src/services/notification/sendNotifiction";
-import { INotification, INotificationObject, NotificationType } from "./src/DB/notificationSchema";
 const server = http.createServer(app);
 const io = new SocketIOServer(server, {
   cors: {

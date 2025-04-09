@@ -39,14 +39,11 @@ export const createUserSchema = z.object({
 });
 
 export const updateUserSchema = z.object({
-  params: z.object({
-    userId: idSchema
-  }),
   body: z.discriminatedUnion('updateType', [
-    // Password update option
+     
       z.object({
-          updateType: z.literal("password"),
-          password: passwordSchema 
+          updateType: z.literal("email"),
+          email: emailSchema 
     }),
     
     // Name update option

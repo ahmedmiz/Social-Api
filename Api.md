@@ -73,13 +73,13 @@
      }
      ```
 
-6. **Update User Name**: `PATCH /userName`  
-   - Update the authenticated user's name.  
+6. **Update User Name or Email**: `PUT /userName`  
+   - Update the authenticated user's name or email.  
    - Requires: `{Authentication}`  
    - Request Body:  
 
      ```json
-     { "userName": "new name" }
+     {"updateType": "name" , "name": "new name" }
      ```  
 
    - Response:  

@@ -3,7 +3,9 @@ import { IPost } from "../DB/postSchema";
 import { IComment } from '../DB/commentSchema';
 import { IUser } from '../DB/userSchema';
 import IUserServices from '../interfaces/services/IUserServices';
-import { INotification } from '../DB/notificationSchema';
+import { INotification, INotificationObject , NotificationType} from '../DB/notificationSchema';
+import { sendNotification } from './notification/sendNotifiction';
+import { ValidationError } from '../util/errorHandling';
 class UserService implements IUserServices{  
     async getUserByname(userName: string, fields: string[]): Promise<IUser[]> {
         try { 
@@ -64,6 +66,35 @@ class UserService implements IUserServices{
         try { 
             const notifications: INotification[] = await userDataLayer.getUserNotifiactions(userId);
             return notifications ? notifications : [];
+        }catch(error) { 
+            throw error;
+        }
+    
+    }
+    async addFriend(userId : string  , userName : string , friendId : string): Promise<void> {
+        try { 
+            // check if valid friend 
+            const friend = await userDataLayer.getUserById(friendId, ["name"]);
+            if (!friend) throw new ValidationError("friend not found!");
+            // get user friends 
+            const userFriends: IUser[] = await userDataLayer.getUserFriends(userId, [""]);
+            // check if already a friend 
+            userFriends.forEach((e) => { if (e._id == friendId) throw new ValidationError("already a friend") });
+          
+            // constract notification
+            const notification  : INotificationObject = {
+                senderId: userId,
+                senderName: userName,
+                receiverId: friendId,
+                type: NotificationType.FRIEND_REQUEST,
+                createdAt: new Date(),
+                message: "hey, want to be friends?",        
+            }
+            // send the notification to the friend requested
+            await sendNotification(friendId, notification); 
+            // save the notification to the friend DB 
+            await userDataLayer.addNotificationToUser(friendId , notification)
+            return; 
         }catch(error) { 
             throw error;
         }

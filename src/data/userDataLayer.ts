@@ -1,12 +1,11 @@
-import { User } from "../model/models";
+import { User, UserNotification } from "../model/models";
 import { IComment } from "../DB/commentSchema";
 import { IPost } from "../DB/postSchema";
 import { IUser } from "../DB/userSchema";
-
 import { NotFoundError, ValidationError } from "../util/errorHandling";
 import IUserDataLayer from '../interfaces/dataLayer/IUserDataLayer';
-import { isErrored } from "stream";
-import { INotification } from "../DB/notificationSchema";
+import { INotification, INotificationObject } from "../DB/notificationSchema";
+import mongoose from "mongoose";
 class UserDataLayer implements IUserDataLayer {
     async addUser(email: string, name: string, password: string): Promise<IUser | null> { 
         try { 
@@ -79,6 +78,7 @@ class UserDataLayer implements IUserDataLayer {
          try { 
              const fieldSelector = fields.join(' ');
              const user: IUser | null =  await User.findById(userId, { comments: 1 }).populate({ path: 'comments', select: fieldSelector }).lean().exec();
+
              if (!user) throw new NotFoundError("User not Found!");
              const comments: IComment[] = user.comments ? user.comments : [];
              return comments;
@@ -112,6 +112,22 @@ class UserDataLayer implements IUserDataLayer {
             throw error;
          }
     }
+    async addNotificationToUser(userId: string , notification : INotificationObject ): Promise<void> { 
+        const session = await mongoose.startSession(); 
+        session.startTransaction();
+        try { 
+            
+            const notificationDB = await UserNotification.create({ ...notification }, {session});
+            await User.findByIdAndUpdate(userId, { $push: { notifications: { ...notification } } }, { new: true, session }).exec();
+            await session.commitTransaction();
+            await session.endSession();
+        } catch (error) {
+            await session.abortTransaction();
+            await session.endSession();
+            throw error;
+         }
+    }
+    
 
     
 }

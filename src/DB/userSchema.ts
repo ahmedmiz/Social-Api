@@ -39,7 +39,7 @@ const userSchema = new Schema<IUser>({
     { type: Schema.Types.ObjectId, ref: "Comment" }
   ],
   notifications: [
-    { type: Schema.Types.ObjectId, ref: "Notification" }  
+    { type: Schema.Types.ObjectId, ref: "UserNotification" }  
   ],
   resetToken: {
     type: String,
