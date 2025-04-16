@@ -4,9 +4,7 @@ node_modules
 # Ignore build artifacts
 dist
 
-# Ignore local environment files
-.env
-.env.local
+
 
 # Ignore logs
 logs
@@ -27,3 +25,8 @@ Dockerfile
 # Ignore OS-specific files
 .DS_Store
 Thumbs.db
+
+# Ignore environment files
+.env
+Api.md
+README.md

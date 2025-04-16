@@ -66,6 +66,99 @@ This project is a RESTful API built with Node.js, Express, and MongoDB. It provi
    ```
 
 ---
+---
+
+## Running the Project with Docker
+
+This project includes a Docker container to simplify the process of wrapping and running the application.
+
+### Steps to Run the Project with Docker
+
+1. **Build the Docker Image**:
+   Navigate to the root directory of the project and run the following command to build the Docker image:
+
+   ```bash
+   docker build -t api-project .
+   ```
+
+2. **Run the Docker Container**:
+   After building the image, run the container using the following command:
+
+   ```bash
+   docker run -p 3000:3000 --env-file .env api-project
+   ```
+
+   - The `-p 3000:3000` flag maps port 3000 of the container to port 3000 on your local machine.
+   - The `--env-file .env` flag ensures the container uses the environment variables defined in your `.env` file.
+
+3. **Access the API**:
+   Once the container is running, you can access the API at:
+
+   ```
+   http://localhost:3000
+   ```
+
+4. **Stop the Container**:
+   To stop the running container, find its container ID using:
+
+   ```bash
+   docker ps
+   ```
+
+   Then stop it using:
+
+   ```bash
+   docker stop <container-id>
+   ```
+
+---
+
+Let me know if you need further assistance!---
+
+## Running the Project with Docker
+
+This project includes a Docker container to simplify the process of wrapping and running the application.
+
+### Steps to Run the Project with Docker
+
+1. **Build the Docker Image**:
+   Navigate to the root directory of the project and run the following command to build the Docker image:
+
+   ```bash
+   docker build -t api-project .
+   ```
+
+2. **Run the Docker Container**:
+   After building the image, run the container using the following command:
+
+   ```bash
+   docker run -p 3000:3000 --env-file .env api-project
+   ```
+
+   - The `-p 3000:3000` flag maps port 3000 of the container to port 3000 on your local machine.
+   - The `--env-file .env` flag ensures the container uses the environment variables defined in your `.env` file.
+
+3. **Access the API**:
+   Once the container is running, you can access the API at:
+
+   ```
+   http://localhost:3000
+   ```
+
+4. **Stop the Container**:
+   To stop the running container, find its container ID using:
+
+   ```bash
+   docker ps
+   ```
+
+   Then stop it using:
+
+   ```bash
+   docker stop <container-id>
+   ```
+
+---
 
 ## API Endpoints
 

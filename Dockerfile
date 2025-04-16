@@ -1,6 +1,7 @@
 #Use the official Node.js image as a base
 
-FROM node:23.4.0-alpine  
+FROM node:23.4.0-alpine
+
 
 #Set the working directory in the container
 
@@ -12,7 +13,7 @@ COPY package*.json ./
 
 #Install dependencies
 
-RUN npm install
+RUN npm install --legacy-peer-deps
 
 #Copy the rest of your application code
 
