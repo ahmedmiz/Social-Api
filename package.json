@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --no-warnings -r ts-node/register 'test/**/*.test.ts' --timeout 50000",
+    "test": "mocha --no-warnings  -r ts-node/register 'test/**/*.test.ts' --timeout 50000",
     "start": "node dist/server.js",
     "nodemon": "nodemon",
     "build": "tsc"
@@ -14,7 +14,7 @@
   "description": "",
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
-    "@types/chai": "^5.2.1",
+    "@types/chai": "^4.3.11",
     "@types/chai-http": "^3.0.5",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
@@ -26,7 +26,7 @@
     "@types/node": "^22.13.4",
     "@types/socket.io": "^3.0.1",
     "@types/supertest": "^6.0.3",
-    "chai": "^5.2.0",
+    "chai": "^4.3.10",
     "mocha": "^11.1.0",
     "supertest": "^7.1.0",
     "typescript": "^5.7.3"
