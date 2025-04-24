@@ -19,11 +19,14 @@ class authServices implements IAuthServices {
     }
     async loginUser(email: string, password: string): Promise<string | null> { 
         try { 
-            const user: IUser | null = await userDataLayer.getUserByEmail(email, ["email", "password" , "name"]);
+
+
+            const user: IUser | null = await userDataLayer.getUserByEmail(email, ["email", "password", "name"]);
+
             if (!user) throw new NotFoundError("user not found!");
             const isMatch: boolean = await Hashing.comparePassword(password, user!.password);
             if (!isMatch) throw new ValidationError("Invalid credentials!");
-            const userId: string = user.id;
+            const userId: string = user._id.toString();
             const token: string = generateToken(userId ,user.name );
             return token;
 

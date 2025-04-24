@@ -7,7 +7,7 @@ import IUserDataLayer from '../interfaces/dataLayer/IUserDataLayer';
 import { INotification, INotificationObject } from "../DB/notificationSchema";
 import mongoose from "mongoose";
 class UserDataLayer implements IUserDataLayer {
-    async addUser(email: string, name: string, password: string): Promise<IUser | null> { 
+    async addUser(name : string , email: string, password: string): Promise<IUser | null> { 
         try { 
             const oldUser = await User.findOne({ email: email });
             if (oldUser) throw new ValidationError("User already exist");
@@ -87,7 +87,7 @@ class UserDataLayer implements IUserDataLayer {
     async updateUser(userId: string, userData: Partial<IUser>): Promise<IUser | null> {
         try {
             const updatedUser = await User.findByIdAndUpdate(userId, userData, { new: true }).lean().exec();
-            if (!updatedUser) throw new NotFoundError("User not Found!");
+            if (!updatedUser) { throw new NotFoundError("User not Found!"); }
             return updatedUser;
         } catch (error) {
             throw error;

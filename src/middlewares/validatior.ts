@@ -16,7 +16,7 @@ export function validate(schema: z.AnyZodObject) {
       return next();
     } catch (error) {
         if (error instanceof z.ZodError) 
-           apiErrorHandling(error, req , res ,"Validation failed" ) 
+          apiErrorHandling(error, req, res, "Validation failed \n " + error.message); 
         else 
             unCaughtErrorHandler(error, req , res , next);
     }

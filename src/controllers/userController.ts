@@ -123,7 +123,24 @@ export default class userController{
 
         }
     }
+    public static uploadProfilePicture = async (req: any, res: Response, next: NextFunction) => { 
+        try {
+            if (!req.file)
+                throw new ValidationError("No imgae file provided");
+            const userId: string = req.userId; 
+            const imagePath: string = req.file.path; 
+
+            const updatedUser = await userService.updateUser(userId, { profilePicture: imagePath });
+            return sendResponse(res, 200, Messages.SUCCESS.UPDATED("user"), updatedUser);   
+        } catch (error) {
+            if (error instanceof NotFoundError || error instanceof ValidationError)
+            apiErrorHandling(error, req, res, error.message, 400);
+        else 
+            unCaughtErrorHandler(error, req, res, next);
+                 }
+        }
     
+
    
     
 }

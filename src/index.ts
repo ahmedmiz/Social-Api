@@ -10,7 +10,10 @@ const app: Application = express();
 
 
 
-    
+const uploadDir = path.join(__dirname, 'public/images');
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
 
 
     const accessLogStream: WriteStream = fs.createWriteStream(
@@ -27,6 +30,7 @@ const app: Application = express();
     app.use(cors());
     // middleware for security
     app.use(helmet());
+    app.use('/public', express.static('uploadDir'));
     new Routes(app);
     app.use(unCaughtErrorHandler);
 

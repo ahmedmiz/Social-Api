@@ -6,4 +6,4 @@ dist/
 logs
 *.log
 *.tsbuildinfo
-
+/public/images

@@ -79,7 +79,7 @@ class UserService implements IUserServices{
             // get user friends 
             const userFriends: IUser[] = await userDataLayer.getUserFriends(userId, [""]);
             // check if already a friend 
-            userFriends.forEach((e) => { if (e._id == friendId) throw new ValidationError("already a friend") });
+            userFriends.forEach((e) => { if (e._id.toString() === friendId) throw new ValidationError("already a friend") });
           
             // constract notification
             const notification  : INotificationObject = {

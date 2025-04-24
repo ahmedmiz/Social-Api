@@ -1,4 +1,4 @@
-import{ Schema, Document } from "mongoose";
+import{ Schema, Document, Types } from "mongoose";
 import { IPost } from "./postSchema";
 import { IComment } from "./commentSchema";
 import { INotification } from "./notificationSchema";
@@ -18,6 +18,7 @@ enum AccountStatus {
 }
 
 interface IUser extends Document {
+   _id: Types.ObjectId;
   email: string;
   name: string;
   password: string;
@@ -80,9 +81,6 @@ const userSchema = new Schema<IUser>({
     type: String,
     required: true,
     unique: true,
-    match: /.+\@.+\..+/,
-    lowercase: true,
-    trim: true,
   },
   name: {
     type: String,

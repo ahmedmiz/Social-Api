@@ -4,6 +4,7 @@ import userController from '../controllers/userController';
 const router = express.Router();
 import { validate } from '../middlewares/validatior';
 import {updateUserSchema} from "../validators/validationSchemas";
+import upload from "../util/multer";
 
 /*
 - retrieves all users with prefix name 
@@ -134,4 +135,6 @@ router.get("/notifications", isAuth, userController.getUserNotifications);
 
 
 router.post('/firends', isAuth, userController.addFriend);
+
+router.post('/profile-picture', isAuth, upload.single('image'),userController.uploadProfilePicture);
 export default router;

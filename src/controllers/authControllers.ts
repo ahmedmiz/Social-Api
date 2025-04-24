@@ -7,7 +7,9 @@ import {sendResponse} from '../util/responsHandler';
 const addUser = async (req: Request, res: any, next: NextFunction) => {
 
   try {
-    const { name, password, email } = req.body;
+    const name = req.body.name;
+    const email = req.body.email; 
+    const password = req.body.password;
     const user: IUser | null = await authServices.addUser(name, email, password);
     return sendResponse(res, 201, Messages.SUCCESS.CREATED("user"),user);
     }
