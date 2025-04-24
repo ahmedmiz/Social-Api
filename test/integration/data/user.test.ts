@@ -14,7 +14,7 @@ describe('User Data Layer',  () => {
   before(async () => { 
       await mongoose.connect(process.env.DB_uri || '');
       testUser = await User.create({
-      name: 'Test User',
+      name: 'MIZO User',
       email: 'test@example.com',
       password: 'password123'
       });
@@ -31,7 +31,7 @@ describe('User Data Layer',  () => {
     it("should return a user when a valid user ID is proviede", async () => {
       const result = await userDataLayer.getUserById(testUser._id, ['name', 'email']);
       expect(result).to.be.an('object');
-      expect(result).to.have.property('name', 'Test User');
+      expect(result).to.have.property('name', 'MIZO User');
       expect(result).to.have.property('email', 'test@example.com');
     });
     it('should return only requested fields', async () => {
