@@ -30,7 +30,7 @@ export default class userController{
     
     public static getUserFiends = async (req: any, res: Response, next: NextFunction) => { 
         try {
-            const userId: string = req.user; 
+            const userId: string = req.userId; 
             let fields : string[] = ["name"];
             const friends: IUser[] | null = await userService.getUserFriends(userId , fields);
             return sendResponse(res, 200, Messages.SUCCESS.FETCHED("friends"), friends);
@@ -100,7 +100,7 @@ export default class userController{
         try {
             const userId: string = req.userId;
             const notifications = await userService.getUserNotifiactions(userId);
-            return sendResponse(res, 200, Messages.SUCCESS.FETCHED("notifications"), notifications);
+            return sendResponse(res, 200, Messages.SUCCESS.FETCHED("notifications"), { notifications : notifications });
         }
         catch (error) {
             if (error instanceof NotFoundError || error instanceof ValidationError)
@@ -131,7 +131,7 @@ export default class userController{
             const imagePath: string = req.file.path; 
 
             const updatedUser = await userService.updateUser(userId, { profilePicture: imagePath });
-            return sendResponse(res, 200, Messages.SUCCESS.UPDATED("user"), updatedUser);   
+            return sendResponse(res, 200, Messages.SUCCESS.UPDATED("user"), { updatedUser : updatedUser });   
         } catch (error) {
             if (error instanceof NotFoundError || error instanceof ValidationError)
             apiErrorHandling(error, req, res, error.message, 400);

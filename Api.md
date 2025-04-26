@@ -8,7 +8,7 @@
 
 ### Users: `/users`
 
-1. **Get Users by Name Prefix**: `GET /:userName`  
+1. **Get Users by Name Prefix**: `GET /?name`  
    - Retrieve all users with a name prefix.  
    - Requires: `{}`  
    - Response:  
@@ -21,7 +21,7 @@
      }
      ```
 
-2. **Get User by ID**: `GET /:userId`  
+2. **Get User by ID**: `GET /?id`  
    - Retrieve a user by their ID.  
    - Requires: `{}`  
    - Response:  
@@ -73,13 +73,13 @@
      }
      ```
 
-6. **Update User Name or Email**: `PUT /userName`  
+6. **Update User Name or Email**: `PUT /`  
    - Update the authenticated user's name or email.  
    - Requires: `{Authentication}`  
    - Request Body:  
 
      ```json
-     {"updateType": "name" , "name": "new name" }
+     {"name": "new name" }
      ```  
 
    - Response:  
@@ -104,7 +104,7 @@
      }
      ```
 
-8. **Get User's Comments**: `GET /notifications`  
+8. **Get User's notifications**: `GET /notifications`  
 
 - Retrieve all notifications of the authenticated user.  
 - Requires: `{Authentication}`  
