@@ -93,8 +93,8 @@ public static getAllPosts = async (req: Request, res: Response, next: NextFuncti
         const userId: string = req.userId;
         const userName : string = req.userName;
         const content: string = req.body.content;
-        const postId: string = req.params.postId;  
-        const comment: IComment |  null = await feedServices.createComment(content,postId, userId, userName); 
+        const parentId : string = req.params.postId;  
+        const comment: IComment |  null = await feedServices.createComment(content,parentId, userId, userName); 
         return sendResponse(res, 201, Messages.SUCCESS.CREATED("comment"),comment);
     } catch (error) { 
         if (error instanceof NotFoundError || error instanceof ValidationError)

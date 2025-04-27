@@ -122,8 +122,9 @@
 
 ### Feed: `/feed`
 
-1. **Get All Posts**: `GET /`  
+1. **Get All Posts**: `GET /?page=1`  
    - Retrieve all posts with pagination.  
+   - params {page = page number}
    - Requires: `{}`  
    - Response:  
 
@@ -217,7 +218,11 @@
    - Request Body:  
 
      ```json
-     { "content": "comment content" }
+     { 
+      "content": "comment content",
+      "parentId" : "id of the parent",
+      "type of parnet" : "post or comment" 
+     }
      ```  
 
    - Response:  

@@ -31,4 +31,6 @@ const commentSchema = new Schema<IComment>({
     type : String ,
   },
 }, { timestamps: true, autoIndex: false });
+commentSchema.index({ postId: 1, createdAt: -1 });
+commentSchema.index({ parentId: 1, createdAt: -1 });
 export { commentSchema , IComment}

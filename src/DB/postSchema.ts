@@ -54,5 +54,6 @@ const postSchema = new Schema<IPost>({
     default: 0,
   },
 }, { timestamps: true, autoIndex: false });
-
+postSchema.index({ createdAt: -1 });
+postSchema.index({ userId: 1, createdAt: -1 });
 export { postSchema , IPost}
