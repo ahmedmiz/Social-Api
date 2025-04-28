@@ -1,5 +1,5 @@
 import authRoute from "./auth";
-import postsRoute from "./feed";
+import postsRoute from "./feed/feed";
 import usersRoute from "./users";
 import { Application } from "express";
 

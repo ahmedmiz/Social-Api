@@ -92,7 +92,14 @@ export const createCommentSchema = z.object({
     content: contentSchema,
   })
 });
-
+export const createReplySchema = z.object({
+  params: z.object({
+    commentId: idSchema
+  }),
+  body: z.object({
+    content: contentSchema,
+  })
+});
 export const updateCommentSchema = z.object({
   params: z.object({
     commentId: idSchema

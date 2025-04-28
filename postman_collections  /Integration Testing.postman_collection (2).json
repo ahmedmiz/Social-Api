@@ -210,7 +210,364 @@
 		},
 		{
 			"name": "Feed",
-			"item": []
+			"item": [
+				{
+					"name": "Posts",
+					"item": [
+						{
+							"name": "create a post",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const responseJson = pm.response.json();  ",
+											"pm.environment.set(\"postID\", responseJson.data.post._id); ",
+											"",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{jwt_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"content\" : \"this post created by a user from a postman\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/feed/posts",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"feed",
+										"posts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get a post by id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/feed/posts/{{postID}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"feed",
+										"posts",
+										"{{postID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get all posts by page number",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/feed/posts/?page=1",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"feed",
+										"posts",
+										""
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update post content",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{jwt_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"content\" : \"updated content of a post\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/feed/posts/{{postID}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"feed",
+										"posts",
+										"{{postID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete a post by it's id",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{jwt_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/feed/posts/{{postID}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"feed",
+										"posts",
+										"{{postID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get post comments",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/feed/posts/{{postID}}/comments",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"feed",
+										"posts",
+										"{{postID}}",
+										"comments"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Comments",
+					"item": [
+						{
+							"name": "create a comment on a post",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const responseJson = pm.response.json();  ",
+											"pm.environment.set(\"commentID\", responseJson.data.comment._id); ",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{jwt_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "file",
+									"file": {}
+								},
+								"url": {
+									"raw": "{{base_url}}/feed/comments/{{postID}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"feed",
+										"comments",
+										"{{postID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create a reply on a comment",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{jwt_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"content\" : \"some reply to some comment\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/feed/comments/replies/{{commentID}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"feed",
+										"comments",
+										"replies",
+										"{{commentID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update comment content",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{jwt_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"content\": \"new updated comment\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/feed/comments/{{commentID}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"feed",
+										"comments",
+										"{{commentID}}"
+									],
+									"query": [
+										{
+											"key": "Auth",
+											"value": "Bearer {{jwt_token}}",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete a comment",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{jwt_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/feed/comments/{{commetnID}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"feed",
+										"comments",
+										"{{commetnID}}"
+									],
+									"query": [
+										{
+											"key": "Auth",
+											"value": null,
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
 		},
 		{
 			"name": "Users",

@@ -34,7 +34,6 @@ describe("Feed Controller Integration Tests", () => {
             userName: testUser.name,
             numberOfComments: 0
         });
-        
         testComment = await feedDataLayer.createComment("Test controller comment content", testUser._id, testUser.name,testPost._id);
         
     
@@ -47,69 +46,65 @@ describe("Feed Controller Integration Tests", () => {
         await mongoose.disconnect();
     });
     
-    describe("GET /feed/:pageNumber", () => {
+    describe("GET /feed/posts/?page=1", () => {
         it("should return posts for page 1", async () => {
             const response = await request(app)
-                .get("/feed?page=1");
+                .get("/feed/posts/?page=1")
+                .expect(200);
             expect(response.body).to.have.property("success", true);
             expect(response.body).to.have.property("data");
-            expect(response.body.data).to.be.an("array");
-            expect(response.body.data.length).to.be.lessThan(11); // Max 10 posts per page
+            expect(response.body.data.posts).to.be.an("array");
+            expect(response.body.data.posts.length).to.be.lessThan(11); // Max 10 posts per page
         });
 
     });
     
-    describe("GET /feed/:postId", () => {
+    describe("GET /feed/posts/:postId", () => {
         it("should return a specific post when a valid ID is provided", async () => {
             const response = await request(app)
-                .get(`/feed/${testPost._id}`)
+                .get(`/feed/posts/${testPost._id}`)
                 .expect(200);
             expect(response.body).to.have.property("success", true);
             expect(response.body).to.have.property("data");
-            expect(response.body.data).to.have.property("content", "Test controller post content");
-            expect(response.body.data).to.have.property("userName", testUser.name);
+            expect(response.body.data.post).to.have.property("content", "Test controller post content");
+            expect(response.body.data.post).to.have.property("userName", testUser.name);
         });
         
        
     });
     
-    describe("POST /feed", () => {
+    describe("POST /feed/posts", () => {
         it("should create a new post when authenticated", async () => {
             const postData = { content: "New integration test post" };
             const response = await request(app)
-                .post("/feed")
+                .post("/feed/posts")
                 .set("Authorization", `Bearer ${authToken}`)
-                .set("Content-Type", "application/json")
                 .send(postData)
                 .expect(201);
             expect(response.body).to.have.property("success", true);
             expect(response.body).to.have.property("data");
-            expect(response.body.data).to.have.property("content", "New integration test post");
-            expect(response.body.data).to.have.property("userName", testUser.name);
+            expect(response.body.data.post).to.have.property("content", "New integration test post");
+            expect(response.body.data.post).to.have.property("userName", testUser.name);
         });
     });
-        
     
-    describe("patch /feed/:postId", () => {
+    describe("PATCH /feed/posts/:postId", () => {
         it("should update a post when authenticated", async () => {
-            const updateData = {
-                content: "Updated controller test post content"
-            };
-            
+            const updateData = { content: "Updated controller test post content" };
             const response = await request(app)
-                .patch(`/feed/${testPost._id}`)
+                .patch(`/feed/posts/${testPost._id}`)
                 .set("Authorization", `Bearer ${authToken}`)
                 .send(updateData)
                 .expect(200);
                 
             expect(response.body).to.have.property("success", true);
             expect(response.body).to.have.property("data");
-            expect(response.body.data).to.have.property("content", "Updated controller test post content");
+            expect(response.body.data.updatedPost).to.have.property("content", "Updated controller test post content");
         });
         
     });
     
-    describe("DELETE /feed/:postId", () => {
+    describe("DELETE /feed/posts/:postId", () => {
         let postToDelete: any;
         
         before(async () => {
@@ -124,9 +119,9 @@ describe("Feed Controller Integration Tests", () => {
         
         it("should delete a post when authenticated", async () => {
             const response = await request(app)
-                .delete(`/feed/${postToDelete._id}`)
+                .delete(`/feed/posts/${postToDelete._id}`)
                 .set("Authorization", `Bearer ${authToken}`)
-                .expect(201);
+                .expect(200);
                 
             expect(response.body).to.have.property("success", true);
             
@@ -137,46 +132,55 @@ describe("Feed Controller Integration Tests", () => {
       
     });
     
-    describe("GET /feed/:postId/comments", () => {
+    describe("GET /posts/:postId/comments", () => {
         it("should return comments for a specific post", async () => {
             const response = await request(app)
-                .get(`/feed/${testPost._id}/comments`)
+                .get(`/feed/posts/${testPost._id}/comments`)
                 .expect(200);
             expect(response.body).to.have.property("success", true);
             expect(response.body).to.have.property("data");
-            expect(response.body.data).to.be.an("array");
-            expect(response.body.data.length).to.be.greaterThan(0);
-            expect(response.body.data[0]).to.have.property("userName", testUser.name);
+            expect(response.body.data.comments).to.be.an("array");
+            expect(response.body.data.comments.length).to.be.greaterThan(0);
+            expect(response.body.data.comments[0]).to.have.property("userName", testUser.name);
         });
 
     });
     
-    describe("POST /comments", () => {
+    describe("POST /comments/:postId", () => {
         it("should create a new comment when authenticated", async () => {
-            const commentData = {
-                content: "New integration test comment"
-            };
-            
+            const commentData = { content: "New integration test comment" };
             const response = await request(app)
-                .post(`/feed/${testPost._id}/comments`)
+                .post(`/feed/comments/${testPost._id}`)
                 .set("Authorization", `Bearer ${authToken}`)
                 .send(commentData)
                 .expect(201);
-                
             expect(response.body).to.have.property("success", true);
             expect(response.body).to.have.property("data");
-            expect(response.body.data).to.have.property("content", "New integration test comment");
-            expect(response.body.data).to.have.property("userName", testUser.name);
-            expect(response.body.data).to.have.property("postId", testPost._id.toString());
+            expect(response.body.data.comment).to.have.property("content", "New integration test comment");
+            expect(response.body.data.comment).to.have.property("userName", testUser.name);
+            expect(response.body.data.comment).to.have.property("postId", testPost._id.toString());
+        });
+    });
+
+    describe("POST /comments/:commentId/replies", () => {
+        it("should create a new reply when authenticated", async () => {
+            const replyData = { content: "New integration test reply" };
+            const response = await request(app)
+                .post(`/feed/comments/replies/${testComment._id}`)
+                .set("Authorization", `Bearer ${authToken}`)
+                .send(replyData)
+                .expect(201);
+            expect(response.body).to.have.property("success", true);
+            expect(response.body).to.have.property("data");
+            expect(response.body.data.comment).to.have.property("content", replyData.content);
+            expect(response.body.data.comment).to.have.property("userName", testUser.name);
+            expect(response.body.data.comment).to.have.property("parentId", testComment._id.toString());
         });
     });
     
     describe("PATCH /comments/:commentId", () => {
         it("should update a comment when authenticated", async () => {
-            const updateData = {
-                content: "Updated controller test comment content"
-            };
-            
+            const updateData = { content: "Updated controller test comment content" };
             const response = await request(app)
                 .patch(`/feed/comments/${testComment._id}`)
                 .set("Authorization", `Bearer ${authToken}`)
@@ -185,15 +189,12 @@ describe("Feed Controller Integration Tests", () => {
                 
             expect(response.body).to.have.property("success", true);
             expect(response.body).to.have.property("data");
-            expect(response.body.data).to.have.property("content", "Updated controller test comment content");
+            expect(response.body.data.updatedComment).to.have.property("content", "Updated controller test comment content");
         });
 
     });
     
     describe("DELETE /comments/:commentId", () => {
-
-        
-    
         it("should delete a comment when authenticated", async () => {
             const response = await request(app)
                 .delete(`/feed/comments/${testComment._id}`)

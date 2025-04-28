@@ -115,83 +115,48 @@ This project includes a Docker container to simplify the process of wrapping and
 
 Let me know if you need further assistance!---
 
-## Running the Project with Docker
-
-This project includes a Docker container to simplify the process of wrapping and running the application.
-
-### Steps to Run the Project with Docker
-
-1. **Build the Docker Image**:
-   Navigate to the root directory of the project and run the following command to build the Docker image:
-
-   ```bash
-   docker build -t api-project .
-   ```
-
-2. **Run the Docker Container**:
-   After building the image, run the container using the following command:
-
-   ```bash
-   docker run -p 3000:3000 --env-file .env api-project
-   ```
-
-   - The `-p 3000:3000` flag maps port 3000 of the container to port 3000 on your local machine.
-   - The `--env-file .env` flag ensures the container uses the environment variables defined in your `.env` file.
-
-3. **Access the API**:
-   Once the container is running, you can access the API at:
-
-   ```
-   http://localhost:3000
-   ```
-
-4. **Stop the Container**:
-   To stop the running container, find its container ID using:
-
-   ```bash
-   docker ps
-   ```
-
-   Then stop it using:
-
-   ```bash
-   docker stop <container-id>
-   ```
-
----
-
 ## API Endpoints
 
 ### User Endpoints
 
-- **GET** `/users/:userName` - Retrieve all users with a name prefix.
-- **GET** `/users/:userId` - Retrieve a user by their ID.
-- **GET** `/users/friends` - Retrieve all friends of the authenticated user.
-- **GET** `/users/posts` - Retrieve all posts of the authenticated user.
-- **GET** `/users/comments` - Retrieve all comments of the authenticated user.
-- **GET** `/users/notifications` - Retrieve all notifications of the authenticated user.
-- **PUT** `/users` - Update the authenticated user's name or email.
-- **DELETE** `/users` - Delete the authenticated user.
+- **GET** `/users` - Search users by name prefix
+- **GET** `/users/friends` - Get user's friends list
+- **GET** `/users/posts` - Get user's posts
+- **GET** `/users/comments` - Get user's comments
+- **GET** `/users/notifications` - Get user's notifications
+- **PUT** `/users` - Update user's name or email
+- **DELETE** `/users` - Delete user account
+- **POST** `/users/friends` - Add a friend
+- **POST** `/users/profile-picture` - Upload profile picture
 
 ### Feed Endpoints
 
-- **GET** `/feed/` - Retrieve all posts with pagination.
-- **GET** `/feed/:postId` - Retrieve a post by its ID.
-- **POST** `/feed/` - Create a new post.
-- **PATCH** `/feed/:postId` - Update a post's content by its ID.
-- **DELETE** `/feed/:postId` - Delete a post by its ID.
-- **GET** `/feed/:postId/comments` - Retrieve all comments on a post.
-- **POST** `/feed/:postId/comments` - Create a comment on a post.
-- **PATCH** `/feed/comments/:commentId` - Update a comment's content by its ID.
-- **DELETE** `/feed/comments/:commentId` - Delete a comment by its ID.
+## posts
+
+- **GET** `/feed/posts` - Get paginated feed posts
+- **GET** `/feed/posts/:postId` - Get post by ID
+- **GET** `/feed/posts/:postId/comments` -
+Get post comments by ID
+- **POST** `/feed/posts` - Create new post
+- **PATCH** `/feed/posts/:postId` - Update post
+- **DELETE** `/feed/posts/:postId` - Delete post
+
+## comments
+
+- **POST** `/feed/comments/:postId` - Create new comment
+- **POST** `/feed/comments/replies/:commentId` - Create new reply to comment
+
+- **PATCH** `/feed/comments/:commentId` - Update comment
+- **DELETE** `/feed/comments/:commentId` - Delete post
 
 ### Authentication Endpoints
 
-- **POST** `/auth/register` - Register a new user.
-- **POST** `/auth/login` - Log in and get a JWT token.
-- **POST** `/auth/logout` - Log out the authenticated user.
-- **POST** `/auth/forgotPassword` - Send a forgot password email with an OTP.
-- **POST** `/auth/resetPassword` - Reset the user's password.
+- **POST** `/auth/register` - Register new user
+- **POST** `/auth/login` - User login
+- **POST** `/auth/logout` - User logout
+- **POST** `/auth/refresh-token` - Refresh access token
+- **POST** `/auth/forgot-password` - Request password reset
+- **POST** `/auth/reset-password` - Reset password
 
 ---
 

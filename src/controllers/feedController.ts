@@ -15,7 +15,7 @@ public static getAllPosts = async (req: Request, res: Response, next: NextFuncti
             throw new ValidationError("Invalid page number");
         }let postFileds : string[] = ["content", "userId", "userName", "numberOfComments"];
         const posts = await feedServices.getAllPosts(page, postFileds); 
-         return sendResponse(res, 200, Messages.SUCCESS.FETCHED("posts"),posts);
+         return sendResponse(res, 200, Messages.SUCCESS.FETCHED("posts"),{posts});
     } catch (error) {
         if (error instanceof NotFoundError || error instanceof ValidationError)
                   apiErrorHandling(error, req, res, error.message, 400);
@@ -29,7 +29,7 @@ public static getAllPosts = async (req: Request, res: Response, next: NextFuncti
         const postId: string = req.params.postId; 
         const fields: string[] = ["content", "userId", "userName", "numberOfComments"];
         const post = await feedServices.getPostById(postId, fields); 
-        return sendResponse(res, 200, Messages.SUCCESS.FETCHED("post"),post);
+        return sendResponse(res, 200, Messages.SUCCESS.FETCHED("post"), {post});
 
     } catch (error) { 
         if (error instanceof NotFoundError || error instanceof ValidationError)
@@ -43,7 +43,7 @@ public static getAllPosts = async (req: Request, res: Response, next: NextFuncti
         const userName : string = req.userName;
         const content: string = req.body.content;
         const post:IPost | null =  await feedServices.createPost(content, userId, userName); 
-        return sendResponse(res, 201, Messages.SUCCESS.CREATED("post"),post);
+            return sendResponse(res, 201, Messages.SUCCESS.CREATED("post"), {post});
     } catch (error) { 
         if (error instanceof NotFoundError || error instanceof ValidationError)
             apiErrorHandling(error, req, res, error.message, 400);  
@@ -56,7 +56,7 @@ public static getAllPosts = async (req: Request, res: Response, next: NextFuncti
             const postId: string = req.params.postId;
             const updatedPost = await feedServices.updatePostContent(content, postId);
             if (!updatedPost) throw new NotFoundError("Unexpected error has occurred when creating the post!");
-            return sendResponse(res, 200, Messages.SUCCESS.UPDATED("post"),updatedPost);
+            return sendResponse(res, 200, Messages.SUCCESS.UPDATED("post"),{updatedPost});
 
         } catch (error) { 
             if (error instanceof NotFoundError || error instanceof ValidationError)
@@ -68,7 +68,7 @@ public static getAllPosts = async (req: Request, res: Response, next: NextFuncti
     try {
         const postId: string = req.params.postId; 
         await feedServices.deletePost(postId);  
-        return sendResponse(res, 201, Messages.SUCCESS.DELETED("post"));
+        return sendResponse(res, 200, Messages.SUCCESS.DELETED("post"));
     } catch (error) { 
             if (error instanceof NotFoundError || error instanceof ValidationError)
             apiErrorHandling(error, req, res, error.message, 400);  
@@ -82,7 +82,7 @@ public static getAllPosts = async (req: Request, res: Response, next: NextFuncti
             const postId: string = req.params.postId; 
             let fields: string[] = ["content", "userId", "userName"];
             const comments: any = await feedServices.getPostComments(postId, fields);
-            return sendResponse(res, 200, Messages.SUCCESS.FETCHED("comments"),comments);
+            return sendResponse(res, 200, Messages.SUCCESS.FETCHED("comments"),{comments});
         } catch (error) { 
             if (error instanceof NotFoundError || error instanceof ValidationError)
             apiErrorHandling(error, req, res, error.message, 400);  
@@ -93,9 +93,10 @@ public static getAllPosts = async (req: Request, res: Response, next: NextFuncti
         const userId: string = req.userId;
         const userName : string = req.userName;
         const content: string = req.body.content;
-        const parentId : string = req.params.postId;  
-        const comment: IComment |  null = await feedServices.createComment(content,parentId, userId, userName); 
-        return sendResponse(res, 201, Messages.SUCCESS.CREATED("comment"),comment);
+        const postId: string = req.params.postId;  
+ 
+        const comment: IComment |  null = await feedServices.createComment(content,postId, userId, userName); 
+        return sendResponse(res, 201, Messages.SUCCESS.CREATED("comment"),{comment });
     } catch (error) { 
         if (error instanceof NotFoundError || error instanceof ValidationError)
             apiErrorHandling(error, req, res, error.message, 400);  
@@ -103,12 +104,29 @@ public static getAllPosts = async (req: Request, res: Response, next: NextFuncti
         }
         
     }
+public static createReply = async (req: any, res: Response, next: NextFunction) => { 
+    try {
+        const userId: string = req.userId;
+        const userName: string = req.userName;
+        const content: string = req.body.content;
+        const commentId: string = req.params.commentId;  
+        const comment: IComment | null = await feedServices.createReply(content, commentId, userId, userName); 
+        return sendResponse(res, 201, Messages.SUCCESS.CREATED("reply"), { comment });
+    } catch (error) { 
+        if (error instanceof NotFoundError || error instanceof ValidationError)
+            apiErrorHandling(error, req, res, error.message, 400);  
+        else 
+            unCaughtErrorHandler(error, req, res, next);
+    }
+}
+
     public static updateComment = async (req: Request, res: Response, next: NextFunction) => { 
         try {
             const commentId : string = req.params.commentId;
             const content: string = req.body.content;
             const updatedComment : IComment | null = await feedServices.updateCommentContent(content, commentId);
-            return sendResponse(res, 200, Messages.SUCCESS.UPDATED("comment"),updatedComment);
+            return sendResponse(res, 200, Messages.SUCCESS.UPDATED("comment"), { updatedComment });
+
         } catch (error) {
         if (error instanceof NotFoundError || error instanceof ValidationError)
             apiErrorHandling(error, req, res, error.message, 400);  

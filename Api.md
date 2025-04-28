@@ -8,8 +8,8 @@
 
 ### Users: `/users`
 
-1. **Get Users by Name Prefix**: `GET /?name`  
-   - Retrieve all users with a name prefix.  
+1. **Get Users by Name Prefix**: `GET /users/search?name=prefix`  
+   - Retrieve all users with a name prefix.
    - Requires: `{}`  
    - Response:  
 
@@ -17,12 +17,12 @@
      {
        "success": true,
        "message": "users retrieved successfully.",
-       "data": [{ "users": [IUser] }]
+       "data": { "users": [IUser] }
      }
      ```
 
-2. **Get User by ID**: `GET /?id`  
-   - Retrieve a user by their ID.  
+2. **Get User by ID**: `GET /users/:userId`  
+   - Retrieve a user by their ID.
    - Requires: `{}`  
    - Response:  
 
@@ -30,7 +30,7 @@
      {
        "success": true,
        "message": "user retrieved successfully.",
-       "data": { "User": IUser }
+       "data": { "user": IUser }
      }
      ```
 
@@ -122,17 +122,22 @@
 
 ### Feed: `/feed`
 
-1. **Get All Posts**: `GET /?page=1`  
-   - Retrieve all posts with pagination.  
-   - params {page = page number}
-   - Requires: `{}`  
+1. **Get Feed Posts**: `GET /feed?page=1&limit=10`  
+   - Retrieve feed posts with pagination.
+   - Query params: {page: number, limit: number}
+   - Requires: `{Authentication}`  
    - Response:  
 
      ```json
      {
        "success": true,
-       "message": "posts retrieved successfully.",
-       "data": [{ "posts": [IPost] }]
+       "message": "feed retrieved successfully.",
+       "data": {
+         "posts": [IPost],
+         "hasMore": boolean,
+         "currentPage": number,
+         "totalPages": number
+       }
      }
      ```
 
@@ -362,13 +367,17 @@
 
 #### IUser  
 
-Represents a user in the system.  
-
 ```json
 {
   "id": "string",
   "name": "string",
   "email": "string",
+  "bio": "string",
+  "followers": ["string"],
+  "following": ["string"],
+  "posts": ["string"],
+  "comments": ["string"],
+  "savedPosts": ["string"],
   "createdAt": "string (ISO 8601 date)",
   "updatedAt": "string (ISO 8601 date)"
 }
@@ -376,15 +385,16 @@ Represents a user in the system.
 
 #### IPost  
 
-Represents a post in the system.  
-
 ```json
 {
   "id": "string",
   "content": "string",
   "userId": "string",
   "userName": "string",
-  "numberOfComments": "number",
+  "likes": ["string"],
+  "comments": ["string"],
+  "mediaUrls": ["string"],
+  "isEdited": "boolean",
   "createdAt": "string (ISO 8601 date)",
   "updatedAt": "string (ISO 8601 date)"
 }

@@ -60,7 +60,7 @@ export function apiErrorHandling(
   };
 
   userLogger.error('API Error:', error);
-  console.log(error);
+
   res.status(status).json({ message , "succsess": false });
 }
 export class NotFoundError extends Error { 

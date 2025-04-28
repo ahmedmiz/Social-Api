@@ -6,7 +6,6 @@ const broadCastNotification = async (userId: string, socket : string): Promise<v
     let userUnPushedNotification : INotification[] = await HotNotification.find({ receiverId: userId });
     if (!userUnPushedNotification.length) return; 
         userUnPushedNotification.forEach((notification) => {
-        console.log("broadCastNotification", notification);
         const notificationData = {
             postId: notification.postId,
             commentId: notification.commentId,

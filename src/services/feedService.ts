@@ -82,6 +82,18 @@ class FeedService implements IFeedServices {
             throw error;
         }
     }
+async createReply(content: string, commentId: string, userName: string, userId: string): Promise<IComment | null> {
+        try {
+            if (!content || content.trim().length == 0) throw new ValidationError("Content text must provided!");
+            await feedDataLayer.getCommentById(commentId, ["userId"]);
+            const comment: IComment | null = await feedDataLayer.createReply(content, userName, userId, commentId);
+            if (!comment)
+                throw new ValidationError("Comment creation failed or comment ID is invalid.");
+            return comment;
+        } catch (error) {
+            throw error;
+        }
+    }
     async updateCommentContent(content: string, commentId: string): Promise<IComment | null >{
         try {
             if (!content || content.trim().length == 0) throw new ValidationError("Content text must provided!");

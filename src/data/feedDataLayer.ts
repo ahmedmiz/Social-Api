@@ -140,6 +140,53 @@ class FeedDataLayer implements IFeedDataLayer {
     }
 }
 
+    async createReply(content: string, userId: string, userName: string, commentId: string): Promise<IComment | null> {
+        const session = await mongoose.startSession(); 
+        session.startTransaction();
+
+        try {
+            const parentComment = await Comment.findById(commentId).session(session).exec();
+            if (!parentComment) {
+                throw new NotFoundError("Parent comment not found!");
+            }
+
+            const createdComments = await Comment.create(
+                [{
+                    content,
+                    userId,
+                    userName,
+                    parentId: commentId,
+                    postId: parentComment.postId // Inherit the postId from parent comment
+                }],
+                { session }
+            );
+            
+            const reply: IComment | null = createdComments[0];
+            if (!reply) {
+                throw new Error("Failed to create a reply!");
+            }
+
+            const updateUser = await User.findByIdAndUpdate(
+                userId,
+                { $push: { comments: reply._id } },
+                { new: true, session }
+            ).exec();
+
+            if (!updateUser) {
+                throw new Error("Failed to update the user with the new reply!");
+            }
+
+            await session.commitTransaction();
+            session.endSession();
+
+            return reply;
+        } catch (error) {
+            await session.abortTransaction();
+            session.endSession();
+            throw error;
+        }
+    }
+
     async updateCommentContent(content: string, commentId: string) : Promise<IComment | null > {
         try { 
             const comment: IComment | null = await Comment.findByIdAndUpdate(commentId, { content: content },{new : true}).exec();
@@ -161,4 +208,4 @@ class FeedDataLayer implements IFeedDataLayer {
 
 }
 
-export default new FeedDataLayer(); 
+export default new FeedDataLayer();
