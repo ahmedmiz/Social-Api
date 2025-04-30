@@ -94,9 +94,9 @@ This project includes a Docker container to simplify the process of wrapping and
 3. **Access the API**:
    Once the container is running, you can access the API at:
 
-   ```
-   http://localhost:3000
-   ```
+```
+   <http://localhost:3000>
+```
 
 4. **Stop the Container**:
    To stop the running container, find its container ID using:
